@@ -98,7 +98,7 @@ const Earning = styled.div`
   cursor: pointer;
 `;
 
-const Featured = () => {
+const Featured = ({ users, shapes, icons, logos }) => {
   return (
     <Container>
       <Welcome>Hi, Welcome Back</Welcome>
@@ -107,29 +107,29 @@ const Featured = () => {
           <SaleIcon>
             <HiChartBar />
           </SaleIcon>
-          <SaleHeading>714K</SaleHeading>
-          <SaleText>Weekly Sale</SaleText>
+          <SaleHeading>{users ? users.length : 0}</SaleHeading>
+          <SaleText>Total Users</SaleText>
         </WeeklySale>
         <AllUser>
           <SaleIcon>
             <HiChartBar />
           </SaleIcon>
-          <SaleHeading>714K</SaleHeading>
-          <SaleText>Weekly Sale</SaleText>
+          <SaleHeading>{shapes ? shapes.length : 0}</SaleHeading>
+          <SaleText>Total Shapes</SaleText>
         </AllUser>
         <Order>
           <SaleIcon>
             <HiChartBar />
           </SaleIcon>
-          <SaleHeading>714K</SaleHeading>
-          <SaleText>Weekly Sale</SaleText>
+          <SaleHeading>{icons ? icons.length : 0}</SaleHeading>
+          <SaleText>Total Icons</SaleText>
         </Order>
         <Earning>
           <SaleIcon>
             <HiChartBar />
           </SaleIcon>
-          <SaleHeading>714K</SaleHeading>
-          <SaleText>Weekly Sale</SaleText>
+          <SaleHeading>{logos ? logos.length : 0}</SaleHeading>
+          <SaleText>Total Logo</SaleText>
         </Earning>
       </Wrapper>
     </Container>
