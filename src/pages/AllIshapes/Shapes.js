@@ -1,23 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import animal from "../../images/animal.png";
-import beauty from "../../images/beauty.png";
-import education from "../../images/education.png";
 import { BiSearch } from "react-icons/bi";
-import sport from "../../images/sport.png";
-import { useStyle } from "./ShapesStyle";
-import {
-  Container,
-  Grid,
-  Typography,
-  TextField,
-  Button,
-  Paper,
-  Dialog,
-  Box,
-} from "@material-ui/core";
-// import { FaEdit } from "react-icons/fa";
-import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 const Containers = styled.div`
   flex: 4;
   // overflow-x: hidden;
@@ -117,157 +101,19 @@ const SearchContainer = styled.div`
   border-radius: 12px;
   width: 10rem;
 `;
-const Logo = ({ shapes }) => {
-  const [open, setOpen] = React.useState(false);
-  const [selectedValue, setSelectedValue] = React.useState();
-  const [openedit, setOpenedit] = React.useState(false);
+const AddnewLink = styled(Link)`
+  color: #ffffff;
 
+  text-decoration: none;
+`;
+const SaveLink = styled(Link)`
+  color: #ffffff;
+
+  text-decoration: none;
+`;
+const Shapes = ({ shapes }) => {
   const [searchShape, setSearchShape] = React.useState(null);
-  const [selectedValueedit, setSelectedValueedit] = React.useState();
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = (value) => {
-    setOpen(false);
-    setSelectedValue(value);
-  };
-  const handleClickOpenedit = () => {
-    setOpenedit(true);
-  };
-
-  const handleCloseedit = (value) => {
-    setOpenedit(false);
-    setSelectedValueedit(value);
-  };
-  function SimpleDialog(props) {
-    const { onClose, selectedValue, open } = props;
-
-    const handleClose = () => {
-      onClose(selectedValue);
-    };
-
-    const handleListItemClick = (value) => {
-      onClose(value);
-    };
-    const classes = useStyle();
-    return (
-      <Dialog
-        onClose={handleClose}
-        aria-labelledby="simple-dialog-title"
-        open={open}
-      >
-        <Paper className={classes.datepaper}>
-          <Grid container>
-            <Grid item lg={12}>
-              <TextField
-                className={classes.textField}
-                id="outlined-basic"
-                label="Logo Name"
-                variant="outlined"
-              />
-            </Grid>
-            <Grid item lg={12}>
-              <TextField
-                className={classes.textField}
-                id="outlined-basic"
-                label="Category Name"
-                variant="outlined"
-              />
-            </Grid>
-            <Grid item lg={12} className={classes.svgjsonfile}>
-              <Grid container>
-                <Grid item lg={6}>
-                  <Box className={classes.svgfile}>
-                    <label>Svg File</label>
-                    <input
-                      type="file"
-                      name=""
-                      id=""
-                      className={classes.fileupload}
-                    />
-                  </Box>
-                </Grid>{" "}
-                <Grid item lg={6}>
-                  <Box className={classes.svgfile}>
-                    <label>Json File</label>
-                    <input
-                      type="file"
-                      name=""
-                      id=""
-                      className={classes.fileupload}
-                    />
-                  </Box>
-                </Grid>
-              </Grid>
-            </Grid>
-            <Grid item>
-              <Box className={classes.reportbutton}>
-                <Button variant="contained" className={classes.report}>
-                  Add logo
-                </Button>
-              </Box>
-            </Grid>
-          </Grid>
-        </Paper>
-      </Dialog>
-    );
-  }
-
-  SimpleDialog.propTypes = {
-    onClose: PropTypes.func.isRequired,
-    open: PropTypes.bool.isRequired,
-    selectedValue: PropTypes.string.isRequired,
-  };
-  function SimpleDialogedit(props) {
-    const { onCloseedit, selectedValueedit, openedit } = props;
-
-    const handleCloseedit = () => {
-      onCloseedit(selectedValueedit);
-    };
-
-    const handleListItemClick = (value) => {
-      onCloseedit(value);
-    };
-    const classes = useStyle();
-    return (
-      <Dialog
-        onClose={handleCloseedit}
-        aria-labelledby="simple-dialog-title"
-        open={openedit}
-      >
-        <Paper className={classes.datepaper}>
-          <Grid container>
-            <Grid item lg={12}>
-              <TextField
-                className={classes.textField}
-                id="outlined-basic"
-                label="Category Name"
-                variant="outlined"
-              />
-            </Grid>
-            <Grid item lg={12}>
-              <input type="file" name="" id="" className={classes.fileupload} />
-            </Grid>
-            <Grid item>
-              <Box className={classes.reportbutton}>
-                <Button variant="contained" className={classes.report}>
-                  Add
-                </Button>
-              </Box>
-            </Grid>
-          </Grid>
-        </Paper>
-      </Dialog>
-    );
-  }
-
-  SimpleDialogedit.propTypes = {
-    onCloseedit: PropTypes.func.isRequired,
-    openedit: PropTypes.bool.isRequired,
-    selectedValueedit: PropTypes.string.isRequired,
-  };
   return (
     <Containers>
       <Addbutton>
@@ -278,13 +124,12 @@ const Logo = ({ shapes }) => {
             onChange={(event) => setSearchShape(event.target.value)}
           />
         </SearchContainer>
-        <Addnew onClick={handleClickOpen}>Add New</Addnew>
+        <Addnew>
+          {" "}
+          <AddnewLink to="/admin/add/shape">Add New</AddnewLink>
+        </Addnew>
       </Addbutton>
-      <SimpleDialog
-        selectedValue={selectedValue}
-        open={open}
-        onClose={handleClose}
-      />
+
       <Wrapper>
         {shapes
           ? shapes.map((shape) => {
@@ -299,15 +144,13 @@ const Logo = ({ shapes }) => {
 
                     <Text>{shape.name}</Text>
                     <LogoButton>
-                      <EditButton onClick={handleClickOpenedit}>
+                      <EditButton>
                         {" "}
-                        Edit
+                        <SaveLink to={`/admin/shape/${shape._id}`}>
+                          Edit
+                        </SaveLink>{" "}
                       </EditButton>
-                      <SimpleDialog
-                        selectedValue={selectedValueedit}
-                        open={openedit}
-                        onClose={handleCloseedit}
-                      />
+
                       <DeleteButton>Delete</DeleteButton>
                     </LogoButton>
                   </Logos>
@@ -324,12 +167,13 @@ const Logo = ({ shapes }) => {
 
                   <Text>{shape.name}</Text>
                   <LogoButton>
-                    <EditButton onClick={handleClickOpenedit}> Edit</EditButton>
-                    <SimpleDialog
-                      selectedValue={selectedValueedit}
-                      open={openedit}
-                      onClose={handleCloseedit}
-                    />
+                    <EditButton>
+                      {" "}
+                      <SaveLink to={`/admin/shape/${shape._id}`}>
+                        Edit
+                      </SaveLink>{" "}
+                    </EditButton>
+
                     <DeleteButton>Delete</DeleteButton>
                   </LogoButton>
                 </Logos>
@@ -341,4 +185,4 @@ const Logo = ({ shapes }) => {
   );
 };
 
-export default Logo;
+export default Shapes;

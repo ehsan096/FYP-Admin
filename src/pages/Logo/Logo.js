@@ -1,10 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { useStyle } from "./LogoStyle";
-import { Grid, TextField, Button, Paper, Dialog, Box } from "@material-ui/core";
-// import { FaEdit } from "react-icons/fa";
-import PropTypes from "prop-types";
 import { BiSearch } from "react-icons/bi";
+import { Link } from "react-router-dom";
 const Containers = styled.div`
   flex: 4;
   margin-top: 10px;
@@ -111,160 +108,21 @@ const SearchContainer = styled.div`
   border-radius: 12px;
   width: 10rem;
 `;
+const AddnewLink = styled(Link)`
+  color: #ffffff;
+
+  text-decoration: none;
+`;
+const Editlogolink = styled(Link)`
+  color: #ffffff;
+
+  text-decoration: none;
+`;
 const Logo = ({ categories, logos }) => {
-  const [open, setOpen] = React.useState(false);
-  const [selectedValue, setSelectedValue] = React.useState(null);
   const [selectCat, setSelectCat] = React.useState("all");
-  const [openedit, setOpenedit] = React.useState(false);
 
   const [searchLogo, setSearchLogo] = React.useState(null);
-  const [selectedValueedit, setSelectedValueedit] = React.useState();
 
-  React.useEffect(() => {
-    console.log("selectCat inside Logo > ", selectCat);
-  }, [selectCat]);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = (value) => {
-    setOpen(false);
-  };
-  const handleClickOpenedit = () => {
-    setOpenedit(true);
-  };
-
-  const handleCloseedit = (value) => {
-    setOpenedit(false);
-  };
-  function SimpleDialog(props) {
-    const { onClose, selectedValue, open } = props;
-
-    const handleClose = () => {
-      onClose(selectedValue);
-    };
-
-    const handleListItemClick = (value) => {
-      onClose(value);
-    };
-    const classes = useStyle();
-    return (
-      <Dialog
-        onClose={handleClose}
-        aria-labelledby="simple-dialog-title"
-        open={open}
-      >
-        <Paper className={classes.datepaper}>
-          <Grid container>
-            <Grid item lg={12}>
-              <TextField
-                className={classes.textField}
-                id="outlined-basic"
-                label="Logo Name"
-                variant="outlined"
-              />
-            </Grid>
-            <Grid item lg={12}>
-              <TextField
-                className={classes.textField}
-                id="outlined-basic"
-                label="Category Name"
-                variant="outlined"
-              />
-            </Grid>
-            <Grid item lg={12} className={classes.svgjsonfile}>
-              <Grid container>
-                <Grid item lg={6}>
-                  <Box className={classes.svgfile}>
-                    <label>Svg File</label>
-                    <input
-                      type="file"
-                      name=""
-                      id=""
-                      className={classes.fileupload}
-                    />
-                  </Box>
-                </Grid>{" "}
-                <Grid item lg={6}>
-                  <Box className={classes.svgfile}>
-                    <label>Json File</label>
-                    <input
-                      type="file"
-                      name=""
-                      id=""
-                      className={classes.fileupload}
-                    />
-                  </Box>
-                </Grid>
-              </Grid>
-            </Grid>
-            <Grid item>
-              <Box className={classes.reportbutton}>
-                <Button variant="contained" className={classes.report}>
-                  Add logo
-                </Button>
-              </Box>
-            </Grid>
-          </Grid>
-        </Paper>
-      </Dialog>
-    );
-  }
-
-  SimpleDialog.propTypes = {
-    onClose: PropTypes.func.isRequired,
-    open: PropTypes.bool.isRequired,
-    selectedValue: PropTypes.string.isRequired,
-  };
-  function SimpleDialogedit(props) {
-    const { onCloseedit, selectedValueedit, openedit } = props;
-
-    const handleCloseedit = () => {
-      onCloseedit(selectedValueedit);
-    };
-
-    const handleListItemClick = (value) => {
-      onCloseedit(value);
-    };
-    const classes = useStyle();
-    return (
-      <Dialog
-        onClose={handleCloseedit}
-        aria-labelledby="simple-dialog-title"
-        open={openedit}
-      >
-        <Paper className={classes.datepaper}>
-          <Grid container>
-            <Grid item lg={12}>
-              <TextField
-                className={classes.textField}
-                id="outlined-basic"
-                label="Category Name"
-                variant="outlined"
-              />
-            </Grid>
-            <Grid item lg={12}>
-              <input type="file" name="" id="" className={classes.fileupload} />
-            </Grid>
-            <Grid item>
-              <Box className={classes.reportbutton}>
-                <Button variant="contained" className={classes.report}>
-                  Add
-                </Button>
-              </Box>
-            </Grid>
-          </Grid>
-        </Paper>
-      </Dialog>
-    );
-  }
-
-  SimpleDialogedit.propTypes = {
-    onCloseedit: PropTypes.func.isRequired,
-    openedit: PropTypes.bool.isRequired,
-    selectedValueedit: PropTypes.string.isRequired,
-  };
   return (
     <Containers>
       <Addbutton>
@@ -289,13 +147,11 @@ const Logo = ({ categories, logos }) => {
           />
         </SearchContainer>
 
-        <Addnew onClick={handleClickOpen}>Add New</Addnew>
+        <Addnew>
+          <AddnewLink to="/admin/add/logo">Add New</AddnewLink>
+        </Addnew>
       </Addbutton>
-      <SimpleDialog
-        selectedValue={selectedValue}
-        open={open}
-        onClose={handleClose}
-      />
+
       <Wrapper>
         {logos
           ? logos.map((logo, index) => {
@@ -311,15 +167,12 @@ const Logo = ({ categories, logos }) => {
                       />
                       <Text>{logo.name}</Text>
                       <LogoButton>
-                        <EditButton onClick={handleClickOpenedit}>
-                          {" "}
-                          Edit
+                        <EditButton>
+                          <Editlogolink to={`/admin/logo/${logo._id}`}>
+                            Edit
+                          </Editlogolink>{" "}
                         </EditButton>
-                        <SimpleDialog
-                          selectedValue={selectedValueedit}
-                          open={openedit}
-                          onClose={handleCloseedit}
-                        />
+
                         <DeleteButton>Delete</DeleteButton>
                       </LogoButton>
                     </Logos>
@@ -336,15 +189,12 @@ const Logo = ({ categories, logos }) => {
                     />
                     <Text>{logo.name}</Text>
                     <LogoButton>
-                      <EditButton onClick={handleClickOpenedit}>
-                        {" "}
-                        Edit
+                      <EditButton>
+                        <Editlogolink to={`/admin/logo/${logo._id}`}>
+                          Edit
+                        </Editlogolink>{" "}
                       </EditButton>
-                      <SimpleDialog
-                        selectedValue={selectedValueedit}
-                        open={openedit}
-                        onClose={handleCloseedit}
-                      />
+
                       <DeleteButton>Delete</DeleteButton>
                     </LogoButton>
                   </Logos>
@@ -361,15 +211,12 @@ const Logo = ({ categories, logos }) => {
                       />
                       <Text>{logo.name}</Text>
                       <LogoButton>
-                        <EditButton onClick={handleClickOpenedit}>
-                          {" "}
-                          Edit
+                        <EditButton>
+                          <Editlogolink to={`/admin/logo/${logo._id}`}>
+                            Edit
+                          </Editlogolink>{" "}
                         </EditButton>
-                        <SimpleDialog
-                          selectedValue={selectedValueedit}
-                          open={openedit}
-                          onClose={handleCloseedit}
-                        />
+
                         <DeleteButton>Delete</DeleteButton>
                       </LogoButton>
                     </Logos>
@@ -386,15 +233,12 @@ const Logo = ({ categories, logos }) => {
                     />
                     <Text>{logo.name}</Text>
                     <LogoButton>
-                      <EditButton onClick={handleClickOpenedit}>
-                        {" "}
-                        Edit
+                      <EditButton>
+                        <Editlogolink to={`/admin/logo/${logo._id}`}>
+                          Edit
+                        </Editlogolink>{" "}
                       </EditButton>
-                      <SimpleDialog
-                        selectedValue={selectedValueedit}
-                        open={openedit}
-                        onClose={handleCloseedit}
-                      />
+
                       <DeleteButton>Delete</DeleteButton>
                     </LogoButton>
                   </Logos>

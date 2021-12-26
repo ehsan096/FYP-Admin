@@ -60,9 +60,29 @@ export const useStyle = makeStyles((theme) => ({
       backgroundColor: "#e41111",
     },
   },
+  textField: {
+    width: "80%",
+    marginTop: "10px",
+  },
+  report: {
+    textTransform: "capitalize",
+    backgroundColor: "#0ac294",
+    color: "white",
+    "&:hover": {
+      backgroundColor: "#0ac294",
+    },
+  },
+  reportbutton: {
+    textAlign: "center",
+    marginTop: "22px",
+    marginLeft: "12rem",
+  },
+  datepaper: {
+    padding: "30px",
+  },
   actionbutton: {
     display: "flex",
-    justifyContent: "space-around",
+    justifyContent: "space-between",
     alignItems: "center",
 
     alignContent: "center",

@@ -17,6 +17,16 @@ import IconCategory from "./pages/IconCategory/IconCategory";
 import UserDetails from "./pages/UserDetails/UserDetails";
 import Icons from "./pages/AllIcons/Icons";
 import Shapes from "./pages/AllIshapes/Shapes";
+import Addlogo from "./pages/AddLogo/Addlogo";
+import Editlogo from "./pages/Editlogo/Editlogo";
+import Addshape from "./pages/Addshape/Addshape";
+import Editshape from "./pages/Editshape/Editshape";
+import Addicon from "./pages/Addicon/Addicon";
+import Editicon from "./pages/Editicon/Editicon";
+import Addiconcategory from "./pages/Addiconcategory/Addiconcategory";
+import Editiconcategory from "./pages/Editiconcategory/Editiconcategory";
+import Addlogoconcategory from "./pages/Addlogocategory/Addlogocategory";
+import Editlogoconcategory from "./pages/Editlogocategory/Editlogocategory ";
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -169,6 +179,36 @@ function App() {
           </Route>
           <Route exact path="/admin/shapes">
             <Shapes shapes={shapes} />
+          </Route>
+          <Route exact path="/admin/add/logo">
+            <Addlogo />
+          </Route>{" "}
+          <Route exact path="/admin/logo/:id">
+            <Editlogo />
+          </Route>{" "}
+          <Route exact path="/admin/add/shape">
+            <Addshape />
+          </Route>{" "}
+          <Route exact path="/admin/shape/:id">
+            <Editshape />
+          </Route>{" "}
+          <Route exact path="/admin/add/icon">
+            <Addicon />
+          </Route>
+          <Route exact path="/admin/icon/:id">
+            <Editicon />
+          </Route>
+          <Route exact path="/admin/add/iconcategory">
+            <Addiconcategory />
+          </Route>{" "}
+          <Route exact path="/admin/iconcategory/:id">
+            <Editiconcategory />
+          </Route>
+          <Route exact path="/admin/add/logocategory">
+            <Addlogoconcategory />
+          </Route>{" "}
+          <Route exact path="/admin/logocategory/:id">
+            <Editlogoconcategory />
           </Route>
         </Switch>
       </Container>

@@ -1,15 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 
 import styled from "styled-components";
 import Badge from "@material-ui/core/Badge";
-import { BiSearch } from "react-icons/bi";
+import { makeStyles, Menu, MenuItem } from "@material-ui/core";
+import { Link } from "react-router-dom";
 
 import { NotificationsNoneOutlined } from "@material-ui/icons";
 import userpic from "../images/userround.svg";
 const Container = styled.div`
-  margin-top: 20px;
+  margin: 0px;
+  padding: 0px;
+  position: sticky;
   height: 60px;
-  background-color: white;
+  background-color: #41beac;
   box-shadow: 3px 7px 9px -1px rgba(240, 240, 240, 0.75);
   -webkit-box-shadow: 3px 7px 9px -1px rgba(240, 240, 240, 0.75);
 `;
@@ -33,27 +36,6 @@ const LogoText = styled.h4`
   margin-left: -60px;
   margin-top: 5px;
 `;
-const Center = styled.div`
-  display: flex;
-`;
-const SearchContainer = styled.div`
-  display: flex;
-  border: 1px solid #b1b0b0;
-
-  align-items: center;
-  padding: 10px 20px;
-  border-radius: 12px;
-  width: 330px;
-`;
-const Input = styled.input`
-  border: none;
-  margin-left: 10px;
-  width: 100%;
-  &:focus {
-    outline: none;
-    box-shadow: none;
-  }
-`;
 
 const Right = styled.div`
   display: flex;
@@ -72,10 +54,30 @@ const ListItem = styled.li`
   margin-right: 30px;
   cursor: pointer;
 `;
-
+const useStyles = makeStyles((theme) => ({
+  profilemenu: {
+    marginTop: "40px",
+    marginLeft: "-30px",
+    // marginTop: "-430px",
+    // marginLeft: "1160px",
+  },
+  profilemenulink: {
+    textDecoration: "none",
+    color: "black",
+  },
+}));
 const ImageRound = styled.img``;
 
 const Navbar = () => {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  const classes = useStyles();
   return (
     <Container>
       <Wrapper>
@@ -128,12 +130,6 @@ const Navbar = () => {
           </Logo>
           <LogoText>BERRY</LogoText>
         </Left>
-        <Center>
-          <SearchContainer>
-            <BiSearch />
-            <Input placeholder="Search" />
-          </SearchContainer>
-        </Center>
         <Right>
           <List>
             <ListItem>
@@ -142,8 +138,29 @@ const Navbar = () => {
               </Badge>
             </ListItem>
             <ListItem>
-              <ImageRound src={userpic} />
+              <ImageRound
+                src={userpic}
+                alt="Remy Sharp"
+                // src={man}
+                aria-controls="simple-menu"
+                aria-haspopup="true"
+                onClick={handleClick}
+              />
             </ListItem>
+            <Menu
+              className={classes.profilemenu}
+              id="simple-menu"
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+            >
+              <MenuItem onClick={handleClose}>
+                {" "}
+                <Link className={classes.profilemenulink}>Profile</Link>
+              </MenuItem>
+              <MenuItem onClick={handleClose}>Logout</MenuItem>
+            </Menu>
           </List>
         </Right>
       </Wrapper>
