@@ -30,7 +30,11 @@ const Right = styled.div`
   width: 38%;
 `;
 
-const AddChart = () => {
+const AddChart = ({ iconCategories, categories, shapes, icons, logos }) => {
+  console.log(
+    "Icons Categories > ",
+    iconCategories ? iconCategories.length : 0
+  );
   const [options, SetOption] = useState({
     chart: {
       height: 350,
@@ -119,7 +123,7 @@ const AddChart = () => {
       width: 280,
       type: "pie",
     },
-    labels: ["Team A", "Team B", "Team C", "Team D", "Team E"],
+    labels: ["Icon Categories", "Logo Categories", "Shapes", "Icons", "Logos"],
     responsive: [
       {
         breakpoint: 480,
@@ -134,7 +138,24 @@ const AddChart = () => {
       },
     ],
   });
-  const [pieseries, setPieseries] = useState([44, 55, 13, 43, 22]);
+  const [pieseries, setPieseries] = useState([
+    iconCategories ? iconCategories.length : 0,
+    categories ? categories.length : 0,
+    shapes ? shapes.length : 0,
+    icons ? icons.length : 0,
+    logos ? logos.length : 0,
+  ]);
+
+  React.useEffect(() => {
+    setPieseries([
+      iconCategories ? iconCategories.length : 0,
+      categories ? categories.length : 0,
+      shapes ? shapes.length : 0,
+      icons ? icons.length : 0,
+      logos ? logos.length : 0,
+    ]);
+  }, [iconCategories, categories, shapes, icons, logos]);
+
   return (
     <Container>
       <Wrapper>

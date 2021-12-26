@@ -57,54 +57,54 @@ const Sidebar = () => {
               <HiHome />
             </MenuIcon>
 
-            <MenuItemLink to="/">Dashboard</MenuItemLink>
+            <MenuItemLink to="/admin">Dashboard</MenuItemLink>
           </MenuItem>
           <MenuItem>
             <MenuIcon>
               <RiShoppingBag3Fill />
             </MenuIcon>
 
-            <MenuItemLink to="/Category">Logo Category</MenuItemLink>
+            <MenuItemLink to="/admin/Category">Logo Category</MenuItemLink>
           </MenuItem>
           <MenuItem>
             <MenuIcon>
               <RiShoppingBag3Fill />
             </MenuIcon>
-            <MenuItemLink to="/logo">Logo</MenuItemLink>
-          </MenuItem>
-          <MenuItem>
-            <MenuIcon>
-              <RiShoppingBag3Fill />
-            </MenuIcon>
-
-            <MenuItemLink to="/iconCategory">Icon Category</MenuItemLink>
+            <MenuItemLink to="/admin/logo">Logo</MenuItemLink>
           </MenuItem>
           <MenuItem>
             <MenuIcon>
               <RiShoppingBag3Fill />
             </MenuIcon>
 
-            <MenuItemLink to="/icons">Icons</MenuItemLink>
+            <MenuItemLink to="/admin/iconCategory">Icon Category</MenuItemLink>
           </MenuItem>
           <MenuItem>
             <MenuIcon>
               <RiShoppingBag3Fill />
             </MenuIcon>
 
-            <MenuItemLink to="/shapes">Shapes</MenuItemLink>
+            <MenuItemLink to="/admin/icons">Icons</MenuItemLink>
           </MenuItem>
           <MenuItem>
             <MenuIcon>
               <RiShoppingBag3Fill />
             </MenuIcon>
 
-            <MenuItemLink to="/user">Users</MenuItemLink>
+            <MenuItemLink to="/admin/shapes">Shapes</MenuItemLink>
           </MenuItem>
           <MenuItem>
             <MenuIcon>
               <RiShoppingBag3Fill />
             </MenuIcon>
-            <MenuItemLink to="/adminlogin">Profile</MenuItemLink>
+
+            <MenuItemLink to="/admin/user">Users</MenuItemLink>
+          </MenuItem>
+          <MenuItem>
+            <MenuIcon>
+              <RiShoppingBag3Fill />
+            </MenuIcon>
+            <MenuItemLink to="/admin/login">Profile</MenuItemLink>
           </MenuItem>
         </Menu>
       </Wrapper>

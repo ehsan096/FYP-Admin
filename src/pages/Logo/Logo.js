@@ -1,24 +1,13 @@
 import React from "react";
 import styled from "styled-components";
-import animal from "../../images/animal.png";
-import beauty from "../../images/beauty.png";
-import education from "../../images/education.png";
-import sport from "../../images/sport.png";
 import { useStyle } from "./LogoStyle";
-import {
-  Container,
-  Grid,
-  Typography,
-  TextField,
-  Button,
-  Paper,
-  Dialog,
-  Box,
-} from "@material-ui/core";
+import { Grid, TextField, Button, Paper, Dialog, Box } from "@material-ui/core";
 // import { FaEdit } from "react-icons/fa";
 import PropTypes from "prop-types";
+import { BiSearch } from "react-icons/bi";
 const Containers = styled.div`
   flex: 4;
+  margin-top: 10px;
 `;
 const Wrapper = styled.div`
   display: grid;
@@ -104,12 +93,36 @@ const Option = styled.option`
   background-color: white;
   color: black;
 `;
-const Logo = () => {
+const Input = styled.input`
+  border: none;
+  margin-left: 10px;
+  width: 100%;
+  &:focus {
+    outline: none;
+    box-shadow: none;
+  }
+`;
+const SearchContainer = styled.div`
+  display: flex;
+  border: 1px solid #b1b0b0;
+
+  align-items: center;
+  padding: 10px 20px;
+  border-radius: 12px;
+  width: 10rem;
+`;
+const Logo = ({ categories, logos }) => {
   const [open, setOpen] = React.useState(false);
-  const [selectedValue, setSelectedValue] = React.useState();
+  const [selectedValue, setSelectedValue] = React.useState(null);
+  const [selectCat, setSelectCat] = React.useState("all");
   const [openedit, setOpenedit] = React.useState(false);
 
+  const [searchLogo, setSearchLogo] = React.useState(null);
   const [selectedValueedit, setSelectedValueedit] = React.useState();
+
+  React.useEffect(() => {
+    console.log("selectCat inside Logo > ", selectCat);
+  }, [selectCat]);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -117,7 +130,6 @@ const Logo = () => {
 
   const handleClose = (value) => {
     setOpen(false);
-    setSelectedValue(value);
   };
   const handleClickOpenedit = () => {
     setOpenedit(true);
@@ -125,7 +137,6 @@ const Logo = () => {
 
   const handleCloseedit = (value) => {
     setOpenedit(false);
-    setSelectedValueedit(value);
   };
   function SimpleDialog(props) {
     const { onClose, selectedValue, open } = props;
@@ -257,17 +268,26 @@ const Logo = () => {
   return (
     <Containers>
       <Addbutton>
-        <Selectoption>
-          {/* <select> */}
-          <Option> Select Category</Option>
-          <Option>Animal</Option>
-          <Option>Food</Option>
-          <Option>Beauty</Option>
-          <Option>Education</Option>
-          <Option>Sport</Option>
-
-          {/* </select> */}
+        <Selectoption onChange={(event) => setSelectCat(event.target.value)}>
+          <Option value="all"> ALL</Option>
+          {categories
+            ? categories.map((category, index) => {
+                return (
+                  <Option key={index} value={category.name}>
+                    {" "}
+                    {category.name}
+                  </Option>
+                );
+              })
+            : ""}
         </Selectoption>
+        <SearchContainer>
+          <BiSearch />
+          <Input
+            placeholder="Search Logo"
+            onChange={(event) => setSearchLogo(event.target.value)}
+          />
+        </SearchContainer>
 
         <Addnew onClick={handleClickOpen}>Add New</Addnew>
       </Addbutton>
@@ -277,43 +297,113 @@ const Logo = () => {
         onClose={handleClose}
       />
       <Wrapper>
-        <Logos>
-          <Image src={animal} />
-          <Text>Animal Logo</Text>
-          <LogoButton>
-            <EditButton onClick={handleClickOpenedit}> Edit</EditButton>
-            <SimpleDialog
-              selectedValue={selectedValueedit}
-              open={openedit}
-              onClose={handleCloseedit}
-            />
-            <DeleteButton>Delete</DeleteButton>
-          </LogoButton>
-        </Logos>
-        <Logos>
-          <Image src={beauty} />
-          <Text>Beauty Logo</Text>
-          <LogoButton>
-            <EditButton> Edit</EditButton>
-            <DeleteButton>Delete</DeleteButton>
-          </LogoButton>
-        </Logos>
-        <Logos>
-          <Image src={education} />
-          <Text>Education Logo</Text>
-          <LogoButton>
-            <EditButton> Edit</EditButton>
-            <DeleteButton>Delete</DeleteButton>
-          </LogoButton>
-        </Logos>
-        <Logos>
-          <Image src={sport} />
-          <Text>Sport Logo</Text>
-          <LogoButton>
-            <EditButton> Edit</EditButton>
-            <DeleteButton>Delete</DeleteButton>
-          </LogoButton>
-        </Logos>
+        {logos
+          ? logos.map((logo, index) => {
+              return selectCat === logo.category ? (
+                searchLogo ? (
+                  logo.name.toLowerCase().includes(searchLogo.toLowerCase()) ? (
+                    <Logos key={index}>
+                      {console.log("Logo inside Map 296 ", logo.name)}
+                      <Image
+                        src={`data:image/svg+xml;base64,${btoa(
+                          unescape(encodeURIComponent(logo.logoSvg))
+                        )}`}
+                      />
+                      <Text>{logo.name}</Text>
+                      <LogoButton>
+                        <EditButton onClick={handleClickOpenedit}>
+                          {" "}
+                          Edit
+                        </EditButton>
+                        <SimpleDialog
+                          selectedValue={selectedValueedit}
+                          open={openedit}
+                          onClose={handleCloseedit}
+                        />
+                        <DeleteButton>Delete</DeleteButton>
+                      </LogoButton>
+                    </Logos>
+                  ) : (
+                    ""
+                  )
+                ) : (
+                  <Logos key={index}>
+                    {console.log("Logo inside Map 296 ", logo.name)}
+                    <Image
+                      src={`data:image/svg+xml;base64,${btoa(
+                        unescape(encodeURIComponent(logo.logoSvg))
+                      )}`}
+                    />
+                    <Text>{logo.name}</Text>
+                    <LogoButton>
+                      <EditButton onClick={handleClickOpenedit}>
+                        {" "}
+                        Edit
+                      </EditButton>
+                      <SimpleDialog
+                        selectedValue={selectedValueedit}
+                        open={openedit}
+                        onClose={handleCloseedit}
+                      />
+                      <DeleteButton>Delete</DeleteButton>
+                    </LogoButton>
+                  </Logos>
+                )
+              ) : selectCat === "all" ? (
+                searchLogo ? (
+                  logo.name.toLowerCase().includes(searchLogo.toLowerCase()) ? (
+                    <Logos key={index}>
+                      {console.log("Logo inside Map 296 ", logo.name)}
+                      <Image
+                        src={`data:image/svg+xml;base64,${btoa(
+                          unescape(encodeURIComponent(logo.logoSvg))
+                        )}`}
+                      />
+                      <Text>{logo.name}</Text>
+                      <LogoButton>
+                        <EditButton onClick={handleClickOpenedit}>
+                          {" "}
+                          Edit
+                        </EditButton>
+                        <SimpleDialog
+                          selectedValue={selectedValueedit}
+                          open={openedit}
+                          onClose={handleCloseedit}
+                        />
+                        <DeleteButton>Delete</DeleteButton>
+                      </LogoButton>
+                    </Logos>
+                  ) : (
+                    ""
+                  )
+                ) : (
+                  <Logos key={index}>
+                    {console.log("Logo inside Map 296 ", logo.name)}
+                    <Image
+                      src={`data:image/svg+xml;base64,${btoa(
+                        unescape(encodeURIComponent(logo.logoSvg))
+                      )}`}
+                    />
+                    <Text>{logo.name}</Text>
+                    <LogoButton>
+                      <EditButton onClick={handleClickOpenedit}>
+                        {" "}
+                        Edit
+                      </EditButton>
+                      <SimpleDialog
+                        selectedValue={selectedValueedit}
+                        open={openedit}
+                        onClose={handleCloseedit}
+                      />
+                      <DeleteButton>Delete</DeleteButton>
+                    </LogoButton>
+                  </Logos>
+                )
+              ) : (
+                ""
+              );
+            })
+          : ""}
       </Wrapper>
     </Containers>
   );

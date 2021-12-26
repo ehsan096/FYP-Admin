@@ -99,6 +99,9 @@ const Earning = styled.div`
 `;
 
 const Featured = ({ users, shapes, icons, logos }) => {
+  React.useEffect(() => {
+    console.log(" Here are users > ", users);
+  }, [users]);
   return (
     <Container>
       <Welcome>Hi, Welcome Back</Welcome>

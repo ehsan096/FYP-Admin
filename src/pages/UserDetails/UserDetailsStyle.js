@@ -62,8 +62,10 @@ export const useStyle = makeStyles((theme) => ({
   },
   actionbutton: {
     display: "flex",
+    justifyContent: "space-around",
     alignItems: "center",
-    alignContent: "flex-end",
+
+    alignContent: "center",
     marginTop: "2rem",
   },
   deleteuser: {

@@ -1,30 +1,19 @@
 import React from "react";
 import styled from "styled-components";
-import animal from "../../images/animal.png";
-import beauty from "../../images/beauty.png";
-import education from "../../images/education.png";
-import food from "../../images/food.png";
 import { useStyle } from "./IconCategoryStyle";
-import {
-  Container,
-  Grid,
-  Typography,
-  TextField,
-  Button,
-  Paper,
-  Dialog,
-  Box,
-} from "@material-ui/core";
+import { Grid, TextField, Button, Paper, Dialog, Box } from "@material-ui/core";
 // import { FaEdit } from "react-icons/fa";
 import PropTypes from "prop-types";
+import { BiSearch } from "react-icons/bi";
 const Containers = styled.div`
   flex: 4;
-  margin-top: 50px;
+  margin-top: 10px;
 `;
 const Addbutton = styled.div`
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   margin-right: 110px;
+  margin-left: 1.5rem;
   margin-bottom: 40px;
 `;
 const Addnew = styled.button`
@@ -62,14 +51,9 @@ const Tdata = styled.td`
 `;
 const Cateicon = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: sapce-evenly;
   align-items: center;
-  margin-left: -280px;
-`;
-const LogoImage = styled.img`
-  width: 20px;
-  height: 20px;
-  border-radius: 20%;
+  margin-left: 20px;
 `;
 const EditButton = styled.button`
   margin-right: 20px;
@@ -90,11 +74,30 @@ const DeleteButton = styled.button`
   border-radius: 20px;
   cursor: pointer;
 `;
-const Category = () => {
+const Input = styled.input`
+  border: none;
+  margin-left: 10px;
+  width: 100%;
+  &:focus {
+    outline: none;
+    box-shadow: none;
+  }
+`;
+const SearchContainer = styled.div`
+  display: flex;
+  border: 1px solid #b1b0b0;
+
+  align-items: center;
+  padding: 10px 20px;
+  border-radius: 12px;
+  width: 10rem;
+`;
+const Category = ({ iconCategories }) => {
   const [open, setOpen] = React.useState(false);
   const [openedit, setOpenedit] = React.useState(false);
   const [selectedValue, setSelectedValue] = React.useState();
   const [selectedValueedit, setSelectedValueedit] = React.useState();
+  const [searchCat, setSearchCat] = React.useState(null);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -235,6 +238,13 @@ const Category = () => {
   return (
     <Containers>
       <Addbutton>
+        <SearchContainer>
+          <BiSearch />
+          <Input
+            placeholder="Search Categories"
+            onChange={(event) => setSearchCat(event.target.value)}
+          />
+        </SearchContainer>
         <Addnew onClick={handleClickOpen}>Add New</Addnew>
       </Addbutton>
       <SimpleDialog
@@ -250,22 +260,67 @@ const Category = () => {
 
             <Thead>Action</Thead>
           </Trow>
-          <Trow>
-            <Cateicon>
-              <LogoImage src={animal} />
-              <Tdata>Circle</Tdata>
-            </Cateicon>
+          {iconCategories
+            ? iconCategories.map((category) =>
+                searchCat ? (
+                  category.name
+                    .toLowerCase()
+                    .includes(searchCat.toLowerCase()) ? (
+                    <Trow>
+                      <Cateicon>
+                        <svg
+                          style={{ width: 25, height: 25 }}
+                          viewBox="0 0 37 37.28203230275507"
+                        >
+                          <path fill={category.color} d={category.d}></path>
+                        </svg>
+                        <Tdata>{category.name}</Tdata>
+                      </Cateicon>
 
-            <Tdata>
-              <EditButton onClick={handleClickOpenedit}> Edit</EditButton>
-              <SimpleDialog
-                selectedValue={selectedValueedit}
-                open={openedit}
-                onClose={handleCloseedit}
-              />
-              <DeleteButton>Delete</DeleteButton>
-            </Tdata>
-          </Trow>
+                      <Tdata>
+                        <EditButton onClick={handleClickOpenedit}>
+                          {" "}
+                          Edit
+                        </EditButton>
+                        <SimpleDialog
+                          selectedValue={selectedValueedit}
+                          open={openedit}
+                          onClose={handleCloseedit}
+                        />
+                        <DeleteButton>Delete</DeleteButton>
+                      </Tdata>
+                    </Trow>
+                  ) : (
+                    ""
+                  )
+                ) : (
+                  <Trow>
+                    <Cateicon>
+                      <svg
+                        style={{ width: 25, height: 25 }}
+                        viewBox="0 0 37 37.28203230275507"
+                      >
+                        <path fill={category.color} d={category.d}></path>
+                      </svg>
+                      <Tdata>{category.name}</Tdata>
+                    </Cateicon>
+
+                    <Tdata>
+                      <EditButton onClick={handleClickOpenedit}>
+                        {" "}
+                        Edit
+                      </EditButton>
+                      <SimpleDialog
+                        selectedValue={selectedValueedit}
+                        open={openedit}
+                        onClose={handleCloseedit}
+                      />
+                      <DeleteButton>Delete</DeleteButton>
+                    </Tdata>
+                  </Trow>
+                )
+              )
+            : ""}
         </Table>
       </Wrapper>
     </Containers>

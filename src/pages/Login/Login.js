@@ -17,23 +17,40 @@ import FormControl from "@material-ui/core/FormControl";
 import TextField from "@material-ui/core/TextField";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import LockIcon from "@material-ui/icons/Lock";
 import React from "react";
 import { useStyle } from "./LoginStyle";
-import styled from "styled-components";
-// const Container = styled.div`
-//   flex: 4;
-// `;
+// import axios from "axios";
+import userService from "../../services/UserService";
+import { toast } from "react-toastify";
+
 const Login = () => {
   const classes = useStyle();
   const [values, setValues] = React.useState({
-    amount: "",
     password: "",
-    weight: "",
-    weightRange: "",
     showPassword: false,
   });
+
+  const [email, setEmail] = React.useState("");
+  const [login, setLogin] = React.useState(false);
+  const history = useHistory();
+
+  async function handleSubmit(event) {
+    event.preventDefault();
+
+    try {
+      await userService.login(email, values.password);
+      setLogin(true);
+      history.push("/admin");
+      // console.log("Check Equality > ", history.goBack() === "/signup");
+    } catch (e) {
+      // alert(e.message);
+      toast.error(e.response.data, {
+        position: toast.POSITION.TOP_CENTER,
+      });
+    }
+  }
 
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
@@ -61,6 +78,8 @@ const Login = () => {
               id="outlined-basic"
               label="Email Address*"
               variant="outlined"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
             />
 
             <FormControl
@@ -96,11 +115,16 @@ const Login = () => {
               color="primary"
               size="large"
               className={classes.loginbutton}
+              onClick={handleSubmit}
             >
               Log in
             </Button>
             <Grid container justifyContent="flex-end">
-              <Grid item></Grid>
+              <Grid item>
+                <Typography className={classes.forgotpassword}>
+                  <Link>Forgot Password?</Link>
+                </Typography>
+              </Grid>
             </Grid>
           </Paper>
         </Grid>
