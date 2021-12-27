@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Button,
   Container,
   Grid,
@@ -7,27 +6,73 @@ import {
   Typography,
   Box,
 } from "@material-ui/core";
-import clsx from "clsx";
-import IconButton from "@material-ui/core/IconButton";
-
-import OutlinedInput from "@material-ui/core/OutlinedInput";
-import InputLabel from "@material-ui/core/InputLabel";
-import InputAdornment from "@material-ui/core/InputAdornment";
-
-import FormControl from "@material-ui/core/FormControl";
 import TextField from "@material-ui/core/TextField";
-import Visibility from "@material-ui/icons/Visibility";
-import VisibilityOff from "@material-ui/icons/VisibilityOff";
-import { Link } from "react-router-dom";
-import LockIcon from "@material-ui/icons/Lock";
 import React from "react";
 import { useStyle } from "./AddlogoStyle";
-import styled from "styled-components";
+// import axios from "axios";
+import { Progress } from "rsup-progress";
+// import Progress from "https://unpkg.com/rsup-progress/dist/index.js";
 // const Container = styled.div`
 //   flex: 4;
 // `;
 const Addlogo = () => {
   const classes = useStyle();
+  const [svgdata, setSvgdata] = React.useState(null);
+  const [jsondata, setJsondata] = React.useState(null);
+  // const Progress = new RsupProgress();
+
+  const progress = new Progress({
+    height: 5,
+    color: "#33eafd",
+    // maxWidth:""
+  });
+  progress.setOptions({
+    color: "red",
+    // className: 'class1 class2'
+  });
+  const fileToDataUri = (file) =>
+    progress.promise(
+      new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          resolve(event.target.result);
+        };
+        reader.readAsText(file);
+        // reader.readAsDataURL(file);
+      })
+    );
+
+  const getUploadedSvg = ({ target: { files } }) => {
+    console.log(files[0]);
+
+    if (!files[0]) {
+      setSvgdata("");
+      return;
+    }
+
+    fileToDataUri(files[0]).then((dataUri) => {
+      console.log(dataUri);
+      setSvgdata(`${dataUri}`);
+    });
+  };
+
+  const getUploadedJson = ({ target: { files } }) => {
+    console.log(files[0]);
+
+    if (!files[0]) {
+      setJsondata("");
+      return;
+    }
+
+    fileToDataUri(files[0]).then((dataUri) => {
+      console.log(dataUri);
+      setJsondata(`${dataUri}`);
+    });
+  };
+
+  React.useEffect(() => {
+    console.log("Json Data", jsondata);
+  }, [jsondata]);
 
   return (
     <Container className={classes.grid}>
@@ -63,6 +108,8 @@ const Addlogo = () => {
                       name=""
                       id=""
                       className={classes.fileupload}
+                      accept=".svg"
+                      onChange={getUploadedSvg}
                     />
                   </Box>
                 </Grid>{" "}
@@ -73,7 +120,9 @@ const Addlogo = () => {
                       type="file"
                       name=""
                       id=""
+                      accept=".JSON"
                       className={classes.fileupload}
+                      onChange={getUploadedJson}
                     />
                   </Box>
                 </Grid>

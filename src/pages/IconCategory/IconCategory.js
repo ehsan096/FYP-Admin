@@ -2,6 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { BiSearch } from "react-icons/bi";
+import iconCategoriesService from "../../services/IconCategories";
+import { toast } from "react-toastify";
 const Containers = styled.div`
   flex: 4;
   margin-top: 10px;
@@ -99,8 +101,46 @@ const SaveLink = styled(Link)`
 
   text-decoration: none;
 `;
-const Category = ({ iconCategories }) => {
+const Category = ({ setUpdate, update, iconCategories, icons }) => {
   const [searchCat, setSearchCat] = React.useState(null);
+
+  const CheckCount = (name) => {
+    if (icons) {
+      let c = 0;
+      icons.forEach((icon) => {
+        if (icon.category === name) {
+          c++;
+        }
+      });
+      return c;
+    }
+    return 0;
+  };
+
+  const deleteCategory = (category) => {
+    let x = CheckCount(category.name);
+    console.log("Number of icons of Category", x);
+    if (x < 2) {
+      iconCategoriesService
+        .deleteIconCategory(category._id)
+        .then((res) => {
+          toast.success(res, {
+            position: toast.POSITION.TOP_CENTER,
+          });
+        })
+        .catch((err) => {
+          toast.error(err.response.data, {
+            position: toast.POSITION.TOP_CENTER,
+          });
+        });
+
+      setUpdate(!update);
+    } else {
+      toast.error("Cannot delete, 1 or more icons depend on this category", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+    }
+  };
 
   return (
     <Containers>
@@ -149,7 +189,12 @@ const Category = ({ iconCategories }) => {
                           </SaveLink>{" "}
                         </EditButton>
 
-                        <DeleteButton>Delete</DeleteButton>
+                        <DeleteButton
+                          onClick={() => deleteCategory(category)}
+                          disabled
+                        >
+                          Delete
+                        </DeleteButton>
                       </Tdata>
                     </Trow>
                   ) : (
@@ -175,7 +220,9 @@ const Category = ({ iconCategories }) => {
                         </SaveLink>{" "}
                       </EditButton>
 
-                      <DeleteButton>Delete</DeleteButton>
+                      <DeleteButton onClick={() => deleteCategory(category)}>
+                        Delete
+                      </DeleteButton>
                     </Tdata>
                   </Trow>
                 )

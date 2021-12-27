@@ -52,6 +52,7 @@ function App() {
   const [icons, setIcons] = React.useState(null);
   const [shapes, setShapes] = React.useState(null);
   const [users, setUsers] = React.useState(null);
+  const [update, setUpdate] = React.useState(false);
   const getCategories = () => {
     categoryService
       .getCategories()
@@ -127,7 +128,7 @@ function App() {
     getIcons();
     getShapes();
     getLogos();
-  }, []);
+  }, [update]);
   React.useEffect(() => {
     setLogin(userService.isLoggedIn());
   });
@@ -172,7 +173,12 @@ function App() {
             <UserDetails users={users} />
           </Route>
           <Route exact path="/admin/iconCategory">
-            <IconCategory iconCategories={iconCategories} />
+            <IconCategory
+              setUpdate={setUpdate}
+              update={update}
+              iconCategories={iconCategories}
+              icons={icons}
+            />
           </Route>
           <Route exact path="/admin/icons">
             <Icons icons={icons} iconCategories={iconCategories} />
@@ -202,10 +208,14 @@ function App() {
             <Addiconcategory />
           </Route>{" "}
           <Route exact path="/admin/iconcategory/:id">
-            <Editiconcategory />
+            <Editiconcategory
+              setUpdate={setUpdate}
+              update={update}
+              iconCategories={iconCategories}
+            />
           </Route>
           <Route exact path="/admin/add/logocategory">
-            <Addlogoconcategory />
+            <Addlogoconcategory setUpdate={setUpdate} update={update} />
           </Route>{" "}
           <Route exact path="/admin/logocategory/:id">
             <Editlogoconcategory />
