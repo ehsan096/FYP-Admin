@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Button,
   Container,
   Grid,
@@ -7,25 +6,45 @@ import {
   Typography,
   Box,
 } from "@material-ui/core";
-import clsx from "clsx";
-import IconButton from "@material-ui/core/IconButton";
-
-import OutlinedInput from "@material-ui/core/OutlinedInput";
-import InputLabel from "@material-ui/core/InputLabel";
-import InputAdornment from "@material-ui/core/InputAdornment";
-
-import FormControl from "@material-ui/core/FormControl";
 import TextField from "@material-ui/core/TextField";
-import Visibility from "@material-ui/icons/Visibility";
-import VisibilityOff from "@material-ui/icons/VisibilityOff";
-import { Link } from "react-router-dom";
-import LockIcon from "@material-ui/icons/Lock";
 import React from "react";
 import { useStyle } from "./AddiconStyle";
-import styled from "styled-components";
+import iconsService from "../../services/Icons";
+import { toast } from "react-toastify";
 
-const Addicon = () => {
+const Addicon = ({ update, setUpdate, iconCategories }) => {
   const classes = useStyle();
+  const [icoon, setIcoon] = React.useState({
+    name: "",
+    category: "",
+    d: "",
+  });
+
+  const AddData = () => {
+    let data = {
+      name: icoon.name,
+      category: icoon.category,
+      d: icoon.d,
+    };
+    iconsService
+      .addIcon(data)
+      .then((res) => {
+        toast.success(res, {
+          position: toast.POSITION.TOP_CENTER,
+        });
+        setIcoon({
+          name: "",
+          category: "",
+          d: "",
+        });
+        setUpdate(!update);
+      })
+      .catch((err) => {
+        toast.error(err.response.data, {
+          position: toast.POSITION.TOP_CENTER,
+        });
+      });
+  };
 
   return (
     <Container className={classes.grid}>
@@ -39,15 +58,31 @@ const Addicon = () => {
               id="outlined-basic"
               label="Icon Name"
               variant="outlined"
+              value={icoon.name}
+              onChange={(event) => {
+                setIcoon({
+                  ...icoon,
+                  name: event.target.value,
+                });
+              }}
             />
 
             <div className={classes.categoryFieldgrid}>
-              <select className={classes.addcategoryicon}>
-                <option value="">Select Category</option>
-                <option value="">animal</option>
-                <option value="">Food</option>
-                <option value="">Education</option>
-                <option value="">Business</option>
+              <select
+                className={classes.addcategoryicon}
+                onChange={(event) =>
+                  setIcoon({
+                    ...icoon,
+                    category: event.target.value,
+                  })
+                }
+              >
+                <option value="none" selected disabled hidden>
+                  Select Category
+                </option>
+                {iconCategories.map((category) => (
+                  <option value={category.name}>{category.name}</option>
+                ))}
               </select>
             </div>
             <TextField
@@ -55,11 +90,22 @@ const Addicon = () => {
               id="outlined-basic"
               label="d"
               variant="outlined"
+              value={icoon.d}
+              onChange={(event) => {
+                setIcoon({
+                  ...icoon,
+                  d: event.target.value,
+                });
+              }}
             />
 
             <Grid item>
               <Box className={classes.reportbutton}>
-                <Button variant="contained" className={classes.editlogobutton}>
+                <Button
+                  variant="contained"
+                  className={classes.editlogobutton}
+                  onClick={AddData}
+                >
                   Add icon
                 </Button>
               </Box>

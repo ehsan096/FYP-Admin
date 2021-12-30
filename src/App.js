@@ -199,7 +199,7 @@ function App() {
             />
           </Route>
           <Route exact path="/admin/shapes">
-            <Shapes shapes={shapes} />
+            <Shapes setUpdate={setUpdate} update={update} shapes={shapes} />
           </Route>
           <Route exact path="/admin/add/logo">
             <Addlogo
@@ -224,7 +224,11 @@ function App() {
             <Editshape />
           </Route>{" "}
           <Route exact path="/admin/add/icon">
-            <Addicon />
+            <Addicon
+              setUpdate={setUpdate}
+              update={update}
+              iconCategories={iconCategories}
+            />
           </Route>
           <Route exact path="/admin/icon/:id">
             <Editicon
