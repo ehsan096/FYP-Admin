@@ -42,7 +42,7 @@ const Editiconcategory = ({ iconCategories, setUpdate, update }) => {
         name: iconCategories[i].name,
         d: iconCategories[i].d,
         color: iconCategories[i].color,
-        iconName: iconCategories[i].name,
+        iconName: iconCategories[i].iconName,
       });
       setCategory(iconCategories[i]);
     }
@@ -94,7 +94,7 @@ const Editiconcategory = ({ iconCategories, setUpdate, update }) => {
               id="outlined-basic"
               label="Category Name"
               variant="outlined"
-              value={value.name ? value.name : ""}
+              value={value.name}
               onChange={(event) =>
                 setValue({
                   ...value,
@@ -108,7 +108,7 @@ const Editiconcategory = ({ iconCategories, setUpdate, update }) => {
               id="outlined-basic"
               label="d"
               variant="outlined"
-              value={value.d ? value.d : ""}
+              value={value.d}
               onChange={(event) =>
                 setValue({
                   ...value,
@@ -121,7 +121,7 @@ const Editiconcategory = ({ iconCategories, setUpdate, update }) => {
               id="outlined-basic"
               label="Icon Name"
               variant="outlined"
-              value={value.iconName ? value.iconName : ""}
+              value={value.iconName}
               onChange={(event) =>
                 setValue({
                   ...value,

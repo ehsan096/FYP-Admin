@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Button,
   Container,
   Grid,
@@ -7,22 +6,9 @@ import {
   Typography,
   Box,
 } from "@material-ui/core";
-import clsx from "clsx";
-import IconButton from "@material-ui/core/IconButton";
-
-import OutlinedInput from "@material-ui/core/OutlinedInput";
-import InputLabel from "@material-ui/core/InputLabel";
-import InputAdornment from "@material-ui/core/InputAdornment";
-
-import FormControl from "@material-ui/core/FormControl";
 import TextField from "@material-ui/core/TextField";
-import Visibility from "@material-ui/icons/Visibility";
-import VisibilityOff from "@material-ui/icons/VisibilityOff";
-import { Link } from "react-router-dom";
-import LockIcon from "@material-ui/icons/Lock";
 import React from "react";
 import { useStyle } from "./AddshapeStyle";
-import styled from "styled-components";
 
 const Addshape = () => {
   const classes = useStyle();

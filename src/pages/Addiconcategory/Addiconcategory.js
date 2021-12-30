@@ -17,19 +17,26 @@ import { toast } from "react-toastify";
 
 const Addiconcategory = ({ setUpdate, update }) => {
   const classes = useStyle();
-
-  const [name, setName] = React.useState(null);
-  const [d, setD] = React.useState(null);
-  const [iconName, setIconName] = React.useState(null);
-  const [color, setColor] = React.useState(null);
+  const [values, setValues] = React.useState({
+    name: "",
+    d: "",
+    iconName: "",
+    color: "",
+  });
 
   const Submit = () => {
-    if (name && d && iconName && color) {
+    if (values.name && values.d && values.iconName && values.color) {
       iconCategoriesService
-        .addIconCategory({ name, d, color, iconName })
+        .addIconCategory(values)
         .then((res) => {
           toast.success(res, {
             position: toast.POSITION.TOP_CENTER,
+          });
+          setValues({
+            name: "",
+            d: "",
+            iconName: "",
+            color: "",
           });
           setUpdate(!update);
         })
@@ -57,7 +64,13 @@ const Addiconcategory = ({ setUpdate, update }) => {
               id="outlined-basic"
               label="Category Name*"
               variant="outlined"
-              onChange={(event) => setName(event.target.value)}
+              value={values.name}
+              onChange={(event) =>
+                setValues({
+                  ...values,
+                  name: event.target.value,
+                })
+              }
             />
 
             <TextField
@@ -65,20 +78,37 @@ const Addiconcategory = ({ setUpdate, update }) => {
               id="outlined-basic"
               label="d*"
               variant="outlined"
-              onChange={(event) => setD(event.target.value)}
+              value={values.d}
+              onChange={(event) =>
+                setValues({
+                  ...values,
+                  d: event.target.value,
+                })
+              }
             />
             <TextField
               className={classes.textField}
               id="outlined-basic"
               label="Icon Name*"
               variant="outlined"
-              onChange={(event) => setIconName(event.target.value)}
+              value={values.iconName}
+              onChange={(event) =>
+                setValues({
+                  ...values,
+                  iconName: event.target.value,
+                })
+              }
             />
             <div className={classes.colorpicker}>
               <p>Icon Color* :</p>
               <ColorPicker
-                value={color}
-                onChange={(value) => setColor(value.css.backgroundColor)}
+                value={values.color}
+                onChange={(value) =>
+                  setValues({
+                    ...values,
+                    color: value.css.backgroundColor,
+                  })
+                }
               />
             </div>
 

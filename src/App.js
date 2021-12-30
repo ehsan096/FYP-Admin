@@ -161,10 +161,20 @@ function App() {
             />
           </Route>
           <Route exact path="/admin/logo">
-            <Logo categories={categories} logos={logos} />
+            <Logo
+              setUpdate={setUpdate}
+              update={update}
+              categories={categories}
+              logos={logos}
+            />
           </Route>
           <Route exact path="/admin/category">
-            <Category categories={categories} />
+            <Category
+              setUpdate={setUpdate}
+              update={update}
+              categories={categories}
+              logos={logos}
+            />
           </Route>
           <Route exact path="/admin/user">
             <User users={users} />
@@ -181,16 +191,31 @@ function App() {
             />
           </Route>
           <Route exact path="/admin/icons">
-            <Icons icons={icons} iconCategories={iconCategories} />
+            <Icons
+              setUpdate={setUpdate}
+              update={update}
+              icons={icons}
+              iconCategories={iconCategories}
+            />
           </Route>
           <Route exact path="/admin/shapes">
             <Shapes shapes={shapes} />
           </Route>
           <Route exact path="/admin/add/logo">
-            <Addlogo />
+            <Addlogo
+              setUpdate={setUpdate}
+              update={update}
+              categories={categories}
+              logos={logos}
+            />
           </Route>{" "}
           <Route exact path="/admin/logo/:id">
-            <Editlogo />
+            <Editlogo
+              setUpdate={setUpdate}
+              update={update}
+              categories={categories}
+              logos={logos}
+            />
           </Route>{" "}
           <Route exact path="/admin/add/shape">
             <Addshape />
@@ -202,10 +227,15 @@ function App() {
             <Addicon />
           </Route>
           <Route exact path="/admin/icon/:id">
-            <Editicon />
+            <Editicon
+              setUpdate={setUpdate}
+              update={update}
+              icons={icons}
+              iconCategories={iconCategories}
+            />
           </Route>
           <Route exact path="/admin/add/iconcategory">
-            <Addiconcategory />
+            <Addiconcategory setUpdate={setUpdate} update={update} />
           </Route>{" "}
           <Route exact path="/admin/iconcategory/:id">
             <Editiconcategory
@@ -218,7 +248,11 @@ function App() {
             <Addlogoconcategory setUpdate={setUpdate} update={update} />
           </Route>{" "}
           <Route exact path="/admin/logocategory/:id">
-            <Editlogoconcategory />
+            <Editlogoconcategory
+              setUpdate={setUpdate}
+              update={update}
+              categories={categories}
+            />
           </Route>
         </Switch>
       </Container>

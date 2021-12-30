@@ -1,11 +1,9 @@
 import React from "react";
 import styled from "styled-components";
-import { useStyle } from "./IconsStyle";
-import { Grid, TextField, Button, Paper, Dialog, Box } from "@material-ui/core";
-// import { FaEdit } from "react-icons/fa";
-import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { BiSearch } from "react-icons/bi";
+import iconsService from "../../services/Icons";
+import { toast } from "react-toastify";
 const Containers = styled.div`
   flex: 4;
   // overflow-x: hidden;
@@ -123,9 +121,25 @@ const SaveLink = styled(Link)`
 
   text-decoration: none;
 `;
-const Icons = ({ icons, iconCategories }) => {
+const Icons = ({ update, setUpdate, icons, iconCategories }) => {
   const [selectCat, setSelectCat] = React.useState("all");
   const [searchIcon, setSearchIcon] = React.useState(null);
+
+  const deleteIcon = (id) => {
+    iconsService
+      .deleteIcon(id)
+      .then((res) => {
+        toast.success(res, {
+          position: toast.POSITION.TOP_CENTER,
+        });
+        setUpdate(!update);
+      })
+      .catch((err) => {
+        toast.error(err.response.data, {
+          position: toast.POSITION.TOP_CENTER,
+        });
+      });
+  };
 
   return (
     <Containers>
@@ -178,7 +192,9 @@ const Icons = ({ icons, iconCategories }) => {
                           </SaveLink>{" "}
                         </EditButton>
 
-                        <DeleteButton>Delete</DeleteButton>
+                        <DeleteButton onClick={() => deleteIcon(icon._id)}>
+                          Delete
+                        </DeleteButton>
                       </LogoButton>
                     </Logos>
                   ) : (
@@ -197,7 +213,9 @@ const Icons = ({ icons, iconCategories }) => {
                       <EditButton>
                         <SaveLink to={`/admin/icon/${icon._id}`}>Edit</SaveLink>{" "}
                       </EditButton>
-                      <DeleteButton>Delete</DeleteButton>
+                      <DeleteButton onClick={() => deleteIcon(icon._id)}>
+                        Delete
+                      </DeleteButton>
                     </LogoButton>
                   </Logos>
                 )
@@ -219,7 +237,9 @@ const Icons = ({ icons, iconCategories }) => {
                           </SaveLink>{" "}
                         </EditButton>
 
-                        <DeleteButton>Delete</DeleteButton>
+                        <DeleteButton onClick={() => deleteIcon(icon._id)}>
+                          Delete
+                        </DeleteButton>
                       </LogoButton>
                     </Logos>
                   ) : (
@@ -239,7 +259,9 @@ const Icons = ({ icons, iconCategories }) => {
                         <SaveLink to={`/admin/icon/${icon._id}`}>Edit</SaveLink>{" "}
                       </EditButton>
 
-                      <DeleteButton>Delete</DeleteButton>
+                      <DeleteButton onClick={() => deleteIcon(icon._id)}>
+                        Delete
+                      </DeleteButton>
                     </LogoButton>
                   </Logos>
                 )

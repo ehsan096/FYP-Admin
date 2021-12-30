@@ -11,15 +11,45 @@ import React from "react";
 import { useStyle } from "./AddlogoStyle";
 // import axios from "axios";
 import { Progress } from "rsup-progress";
+import logoService from "../../services/Logos";
+import { toast } from "react-toastify";
 // import Progress from "https://unpkg.com/rsup-progress/dist/index.js";
 // const Container = styled.div`
 //   flex: 4;
 // `;
-const Addlogo = () => {
+const Addlogo = ({ setUpdate, update, categories, logos }) => {
   const classes = useStyle();
-  const [svgdata, setSvgdata] = React.useState(null);
-  const [jsondata, setJsondata] = React.useState(null);
-  // const Progress = new RsupProgress();
+  const [svgdata, setSvgdata] = React.useState("");
+  const [jsondata, setJsondata] = React.useState("");
+  const [logoo, setLogoo] = React.useState({
+    name: "",
+    category: "",
+  });
+  const submit = () => {
+    let data = {
+      name: logoo.name,
+      category: logoo.category,
+      logoSvg: svgdata,
+      logoJson: jsondata,
+    };
+    logoService
+      .addLogo(data)
+      .then((res) => {
+        toast.success(res, {
+          position: toast.POSITION.TOP_CENTER,
+        });
+        setLogoo({
+          name: "",
+          category: "",
+        });
+        setUpdate(!update);
+      })
+      .catch((err) => {
+        toast.error(err.response.data, {
+          position: toast.POSITION.TOP_CENTER,
+        });
+      });
+  };
 
   const progress = new Progress({
     height: 5,
@@ -87,15 +117,31 @@ const Addlogo = () => {
                 id="outlined-basic"
                 label="Logo Name"
                 variant="outlined"
+                value={logoo.name}
+                onChange={(event) => {
+                  setLogoo({
+                    ...logoo,
+                    name: event.target.value,
+                  });
+                }}
               />
             </Grid>
             <Grid item lg={10} className={classes.categoryFieldgrid}>
-              <select className={classes.categoryField}>
-                <option value="">Select Category</option>
-                <option value="">animal</option>
-                <option value="">Food</option>
-                <option value="">Education</option>
-                <option value="">Business</option>
+              <select
+                className={classes.categoryField}
+                onChange={(event) =>
+                  setLogoo({
+                    ...logoo,
+                    category: event.target.value,
+                  })
+                }
+              >
+                <option value="none" selected disabled hidden>
+                  Select Category
+                </option>
+                {categories.map((category) => (
+                  <option value={category.name}>{category.name}</option>
+                ))}
               </select>
             </Grid>
             <Grid item lg={12} className={classes.svgjsonfile}>
@@ -130,7 +176,11 @@ const Addlogo = () => {
             </Grid>
             <Grid item>
               <Box className={classes.reportbutton}>
-                <Button variant="contained" className={classes.addlogobutton}>
+                <Button
+                  variant="contained"
+                  className={classes.addlogobutton}
+                  onClick={submit}
+                >
                   Add logo
                 </Button>
               </Box>

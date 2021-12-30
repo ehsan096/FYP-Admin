@@ -11,15 +11,59 @@ import TextField from "@material-ui/core/TextField";
 import React from "react";
 import { useStyle } from "./AddlogocategoryStyle";
 import { Progress } from "rsup-progress";
+import { toast } from "react-toastify";
+import categoryService from "../../services/Categories";
 // const Container = styled.div`
 //   flex: 4;
 // `;
-const Addlogocategory = () => {
+const Addlogocategory = ({ setUpdate, update }) => {
   const classes = useStyle();
-  const [svgdata, setSvgdata] = React.useState(null);
-  const [jsondata, setJsondata] = React.useState(null);
+  const [svgdata, setSvgdata] = React.useState("");
+  const [jsondata, setJsondata] = React.useState("");
   // const Progress = new RsupProgress();
 
+  const [value, setValue] = React.useState({
+    name: "",
+    bannerTitle: "",
+    logoTitle: "",
+    paragraph: "",
+    svgString: "",
+    logoName: "",
+  });
+
+  const Submit = () => {
+    let data = {
+      name: value.name,
+      bannerTitle: value.bannerTitle,
+      logoTitle: value.logoTitle,
+      paragraph: value.paragraph,
+      svgString: value.svgString,
+      logoName: value.logoName,
+      logoSvg: svgdata,
+      logoJson: jsondata ? jsondata : "",
+    };
+    categoryService
+      .addCategory(data)
+      .then((res) => {
+        toast.success(res, {
+          position: toast.POSITION.TOP_CENTER,
+        });
+        setValue({
+          name: "",
+          bannerTitle: "",
+          logoTitle: "",
+          paragraph: "",
+          svgString: "",
+          logoName: "",
+        });
+        setUpdate(!update);
+      })
+      .catch((err) => {
+        toast.error(err.response.data, {
+          position: toast.POSITION.TOP_CENTER,
+        });
+      });
+  };
   const progress = new Progress({
     height: 5,
     color: "#33eafd",
@@ -82,6 +126,12 @@ const Addlogocategory = () => {
             id="outlined-basic"
             label="Category Name"
             variant="outlined"
+            onChange={(event) =>
+              setValue({
+                ...value,
+                name: event.target.value,
+              })
+            }
           />
 
           <TextField
@@ -89,6 +139,12 @@ const Addlogocategory = () => {
             id="outlined-basic"
             label="First Logo Name"
             variant="outlined"
+            onChange={(event) =>
+              setValue({
+                ...value,
+                logoName: event.target.value,
+              })
+            }
           />
 
           <TextField
@@ -96,6 +152,12 @@ const Addlogocategory = () => {
             id="outlined-basic"
             label="Banner Title"
             variant="outlined"
+            onChange={(event) =>
+              setValue({
+                ...value,
+                bannerTitle: event.target.value,
+              })
+            }
           />
 
           <TextField
@@ -103,12 +165,24 @@ const Addlogocategory = () => {
             id="outlined-basic"
             label="Logo Title"
             variant="outlined"
+            onChange={(event) =>
+              setValue({
+                ...value,
+                logoTitle: event.target.value,
+              })
+            }
           />
           <TextField
             className={classes.Bannertitle}
             id="outlined-basic"
             label="d"
             variant="outlined"
+            onChange={(event) =>
+              setValue({
+                ...value,
+                svgString: event.target.value,
+              })
+            }
           />
 
           <Grid container>
@@ -120,6 +194,12 @@ const Addlogocategory = () => {
                 id=""
                 cols="98"
                 rows="5"
+                onChange={(event) =>
+                  setValue({
+                    ...value,
+                    paragraph: event.target.value,
+                  })
+                }
               ></textarea>
             </Grid>
           </Grid>
@@ -141,7 +221,9 @@ const Addlogocategory = () => {
                 </Grid>{" "}
                 <Grid item lg={5}>
                   <Box className={classes.svgfile}>
-                    <label className={classes.svgfilelabel}>Json File</label>
+                    <label className={classes.svgfilelabel}>
+                      Json File (Optional)
+                    </label>
                     <input
                       type="file"
                       name=""
@@ -157,7 +239,11 @@ const Addlogocategory = () => {
           </Grid>
           <Grid item>
             <Box className={classes.reportbutton}>
-              <Button variant="contained" className={classes.addlogobutton}>
+              <Button
+                variant="contained"
+                className={classes.addlogobutton}
+                onClick={Submit}
+              >
                 Add logo Category
               </Button>
             </Box>

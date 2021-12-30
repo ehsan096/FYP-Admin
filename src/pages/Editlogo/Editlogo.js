@@ -11,21 +11,87 @@ import TextField from "@material-ui/core/TextField";
 import React from "react";
 import { useStyle } from "./EditlogoStyle";
 import { Progress } from "rsup-progress";
+
+import { useParams, Redirect } from "react-router-dom";
+import logoService from "../../services/Logos";
+import { toast } from "react-toastify";
 // const Container = styled.div`
+
 //   flex: 4;
 // `;
-const Editlogo = () => {
+const Editlogo = ({ setUpdate, update, categories, logos }) => {
   const classes = useStyle();
-  const [values, setValues] = React.useState({
-    amount: "",
-    password: "",
-    weight: "",
-    weightRange: "",
-    showPassword: false,
-  });
+
   const [svgdata, setSvgdata] = React.useState(null);
   const [jsondata, setJsondata] = React.useState(null);
+  const [categ, setCateg] = React.useState(null);
+
+  const [disable, setDisable] = React.useState(true);
+  const [check, setCheck] = React.useState(false);
+  const [logoo, setLogoo] = React.useState({
+    name: "",
+    category: "",
+  });
+  const { id } = useParams();
   // const Progress = new RsupProgress();
+
+  const findlogo = () => {
+    let i = logos.findIndex(checkCategory);
+
+    function checkCategory(logo) {
+      return logo._id === id;
+    }
+    if (i === -1) {
+      <Redirect to="/admin" />;
+      setCheck(!check);
+    } else {
+      setLogoo({
+        name: logos[i].name,
+        category: logos[i].category,
+      });
+      setCateg(logos[i]);
+    }
+  };
+
+  const updateData = () => {
+    let data = {
+      name: logoo.name,
+      category: logoo.category,
+      logoSvg: svgdata ? svgdata : categ.logoSvg,
+      logoJson: jsondata ? jsondata : categ.logoJson,
+    };
+    logoService
+      .updateLogo(id, data)
+      .then((res) => {
+        toast.success(res, {
+          position: toast.POSITION.TOP_CENTER,
+        });
+        setUpdate(!update);
+        setDisable(true);
+      })
+      .catch((err) => {
+        toast.error(err.response.data, {
+          position: toast.POSITION.TOP_CENTER,
+        });
+      });
+  };
+  React.useEffect(() => {
+    findlogo();
+  }, []);
+  React.useEffect(() => {
+    if (
+      categ &&
+      (categ.name !== logoo.name ||
+        categ.category !== logoo.category ||
+        svgdata !== null ||
+        jsondata !== null)
+    ) {
+      console.log("Trueeeee > ", true);
+      setDisable(false);
+    } else {
+      setDisable(true);
+    }
+  }, [logoo, svgdata, jsondata]);
 
   const progress = new Progress({
     height: 5,
@@ -52,7 +118,7 @@ const Editlogo = () => {
     console.log(files[0]);
 
     if (!files[0]) {
-      setSvgdata("");
+      setSvgdata(null);
       return;
     }
 
@@ -66,7 +132,7 @@ const Editlogo = () => {
     console.log(files[0]);
 
     if (!files[0]) {
-      setJsondata("");
+      setJsondata(null);
       return;
     }
 
@@ -80,17 +146,6 @@ const Editlogo = () => {
     console.log("Json Data", jsondata);
   }, [jsondata]);
 
-  const handleChange = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
-  };
-
-  const handleClickShowPassword = () => {
-    setValues({ ...values, showPassword: !values.showPassword });
-  };
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
   return (
     <Container className={classes.grid}>
       <form autoComplete="off" noValidate className={classes.form}>
@@ -104,15 +159,41 @@ const Editlogo = () => {
                 id="outlined-basic"
                 label="Logo Name"
                 variant="outlined"
+                value={logoo.name}
+                onChange={(event) => {
+                  setLogoo({
+                    ...logoo,
+                    name: event.target.value,
+                  });
+                }}
               />
             </Grid>
-            <Grid item lg={10} className={classes.categoryFieldgrid}>
-              <select className={classes.categoryField}>
-                <option value="">Select Category</option>
-                <option value="">animal</option>
-                <option value="">Food</option>
-                <option value="">Education</option>
-                <option value="">Business</option>
+            <Grid
+              item
+              lg={10}
+              className={classes.categoryFieldgrid}
+              onChange={(event) => setLogoo(event.target.value)}
+            >
+              <select
+                className={classes.categoryField}
+                onChange={(event) =>
+                  setLogoo({
+                    ...logoo,
+                    category: event.target.value,
+                  })
+                }
+              >
+                <option value="none" selected disabled hidden>
+                  Select Category
+                </option>
+                {categories.map((category) => (
+                  <option
+                    value={category.name}
+                    selected={category.name === logoo.category}
+                  >
+                    {category.name}
+                  </option>
+                ))}
               </select>
             </Grid>
             <Grid item lg={12} className={classes.svgjsonfile}>
@@ -147,7 +228,12 @@ const Editlogo = () => {
             </Grid>
             <Grid item>
               <Box className={classes.reportbutton}>
-                <Button variant="contained" className={classes.editlogobutton}>
+                <Button
+                  variant="contained"
+                  className={classes.editlogobutton}
+                  onClick={updateData}
+                  disabled={disable}
+                >
                   Save logo
                 </Button>
               </Box>

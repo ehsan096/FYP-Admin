@@ -7,25 +7,84 @@ import {
   Typography,
   Box,
 } from "@material-ui/core";
-import clsx from "clsx";
-import IconButton from "@material-ui/core/IconButton";
-
-import OutlinedInput from "@material-ui/core/OutlinedInput";
-import InputLabel from "@material-ui/core/InputLabel";
-import InputAdornment from "@material-ui/core/InputAdornment";
-
-import FormControl from "@material-ui/core/FormControl";
 import TextField from "@material-ui/core/TextField";
-import Visibility from "@material-ui/icons/Visibility";
-import VisibilityOff from "@material-ui/icons/VisibilityOff";
-import { Link } from "react-router-dom";
-import LockIcon from "@material-ui/icons/Lock";
-import React from "react";
 import { useStyle } from "./EditiconStyle.js";
-import styled from "styled-components";
+import React from "react";
 
-const Editicon = () => {
+import { useParams, Redirect } from "react-router-dom";
+import iconsService from "../../services/Icons";
+import { toast } from "react-toastify";
+
+const Editicon = ({ setUpdate, update, icons, iconCategories }) => {
   const classes = useStyle();
+  const [categ, setCateg] = React.useState(null);
+
+  const [disable, setDisable] = React.useState(true);
+  const [check, setCheck] = React.useState(false);
+  const [icoon, setIcoon] = React.useState({
+    name: "",
+    category: "",
+    d: "",
+  });
+  const { id } = useParams();
+  // const Progress = new RsupProgress();
+
+  const findlogo = () => {
+    let i = icons.findIndex(checkCategory);
+
+    function checkCategory(icon) {
+      return icon._id === id;
+    }
+    if (i === -1) {
+      <Redirect to="/admin" />;
+      setCheck(!check);
+    } else {
+      setIcoon({
+        name: icons[i].name,
+        category: icons[i].category,
+        d: icons[i].d,
+      });
+      setCateg(icons[i]);
+    }
+  };
+
+  const updateData = () => {
+    let data = {
+      name: icoon.name,
+      category: icoon.category,
+      d: icoon.d,
+    };
+    iconsService
+      .updateIcon(id, data)
+      .then((res) => {
+        toast.success(res, {
+          position: toast.POSITION.TOP_CENTER,
+        });
+        setUpdate(!update);
+        setDisable(true);
+      })
+      .catch((err) => {
+        toast.error(err.response.data, {
+          position: toast.POSITION.TOP_CENTER,
+        });
+      });
+  };
+  React.useEffect(() => {
+    findlogo();
+  }, []);
+  React.useEffect(() => {
+    if (
+      categ &&
+      (categ.name !== icoon.name ||
+        categ.category !== icoon.category ||
+        categ.d !== icoon.d)
+    ) {
+      console.log("Trueeeee > ", true);
+      setDisable(false);
+    } else {
+      setDisable(true);
+    }
+  }, [icoon]);
 
   return (
     <Container className={classes.grid}>
@@ -39,15 +98,36 @@ const Editicon = () => {
               id="outlined-basic"
               label="Icon Name"
               variant="outlined"
+              value={icoon.name}
+              onChange={(event) => {
+                setIcoon({
+                  ...icoon,
+                  name: event.target.value,
+                });
+              }}
             />
 
             <div className={classes.categoryFieldgrid}>
-              <select className={classes.categoryicon}>
-                <option value="">Select Category</option>
-                <option value="">animal</option>
-                <option value="">Food</option>
-                <option value="">Education</option>
-                <option value="">Business</option>
+              <select
+                className={classes.categoryicon}
+                onChange={(event) =>
+                  setIcoon({
+                    ...icoon,
+                    category: event.target.value,
+                  })
+                }
+              >
+                <option value="none" selected disabled hidden>
+                  Select Category
+                </option>
+                {iconCategories.map((category) => (
+                  <option
+                    value={category.name}
+                    selected={category.name === icoon.category}
+                  >
+                    {category.name}
+                  </option>
+                ))}
               </select>
             </div>
 
@@ -56,11 +136,23 @@ const Editicon = () => {
               id="outlined-basic"
               label="d"
               variant="outlined"
+              value={icoon.d}
+              onChange={(event) => {
+                setIcoon({
+                  ...icoon,
+                  d: event.target.value,
+                });
+              }}
             />
 
             <Grid item>
               <Box className={classes.reportbutton}>
-                <Button variant="contained" className={classes.editlogobutton}>
+                <Button
+                  variant="contained"
+                  className={classes.editlogobutton}
+                  disabled={disable}
+                  onClick={updateData}
+                >
                   Save icon
                 </Button>
               </Box>

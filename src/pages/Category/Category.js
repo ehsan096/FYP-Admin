@@ -2,6 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import { BiSearch } from "react-icons/bi";
 import { Link } from "react-router-dom";
+import categoryService from "../../services/Categories";
+import { toast } from "react-toastify";
 const Containers = styled.div`
   flex: 4;
   margin-top: 10px;
@@ -100,8 +102,46 @@ const SaveLink = styled(Link)`
 
   text-decoration: none;
 `;
-const Category = ({ categories }) => {
+const Category = ({ categories, logos, update, setUpdate }) => {
   const [searchCat, setSearchCat] = React.useState(null);
+
+  const CheckCount = (name) => {
+    if (logos) {
+      let c = 0;
+      logos.forEach((logo) => {
+        if (logo.category === name) {
+          c++;
+        }
+      });
+      return c;
+    }
+    return 0;
+  };
+
+  const deleteCategory = (category) => {
+    let x = CheckCount(category.name);
+    console.log("Number of icons of Category", x);
+    if (x < 2) {
+      categoryService
+        .deleteCategory(category._id)
+        .then((res) => {
+          toast.success(res, {
+            position: toast.POSITION.TOP_CENTER,
+          });
+
+          setUpdate(!update);
+        })
+        .catch((err) => {
+          toast.error(err.response.data, {
+            position: toast.POSITION.TOP_CENTER,
+          });
+        });
+    } else {
+      toast.error("Cannot delete, 1 or more logos depend on this category", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+    }
+  };
 
   return (
     <Containers>
@@ -148,7 +188,9 @@ const Category = ({ categories }) => {
                           </SaveLink>{" "}
                         </EditButton>
 
-                        <DeleteButton>Delete</DeleteButton>
+                        <DeleteButton onClick={() => deleteCategory(category)}>
+                          Delete
+                        </DeleteButton>
                       </Tdata>
                     </Trow>
                   ) : (
@@ -171,7 +213,9 @@ const Category = ({ categories }) => {
                         </SaveLink>{" "}
                       </EditButton>
 
-                      <DeleteButton>Delete</DeleteButton>
+                      <DeleteButton onClick={() => deleteCategory(category)}>
+                        Delete
+                      </DeleteButton>
                     </Tdata>
                   </Trow>
                 );

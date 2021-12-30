@@ -2,6 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import { BiSearch } from "react-icons/bi";
 import { Link } from "react-router-dom";
+import logoService from "../../services/Logos";
+import { toast } from "react-toastify";
 const Containers = styled.div`
   flex: 4;
   margin-top: 10px;
@@ -118,10 +120,26 @@ const Editlogolink = styled(Link)`
 
   text-decoration: none;
 `;
-const Logo = ({ categories, logos }) => {
+const Logo = ({ categories, logos, update, setUpdate }) => {
   const [selectCat, setSelectCat] = React.useState("all");
 
   const [searchLogo, setSearchLogo] = React.useState(null);
+
+  const DeleteLogo = (id) => {
+    logoService
+      .deleteLogo(id)
+      .then((res) => {
+        toast.success(res, {
+          position: toast.POSITION.TOP_CENTER,
+        });
+        setUpdate(!update);
+      })
+      .catch((err) => {
+        toast.error(err.response.data, {
+          position: toast.POSITION.TOP_CENTER,
+        });
+      });
+  };
 
   return (
     <Containers>
@@ -173,7 +191,9 @@ const Logo = ({ categories, logos }) => {
                           </Editlogolink>{" "}
                         </EditButton>
 
-                        <DeleteButton>Delete</DeleteButton>
+                        <DeleteButton onClick={() => DeleteLogo(logo._id)}>
+                          Delete
+                        </DeleteButton>
                       </LogoButton>
                     </Logos>
                   ) : (
@@ -195,7 +215,9 @@ const Logo = ({ categories, logos }) => {
                         </Editlogolink>{" "}
                       </EditButton>
 
-                      <DeleteButton>Delete</DeleteButton>
+                      <DeleteButton onClick={() => DeleteLogo(logo._id)}>
+                        Delete
+                      </DeleteButton>
                     </LogoButton>
                   </Logos>
                 )
@@ -217,7 +239,9 @@ const Logo = ({ categories, logos }) => {
                           </Editlogolink>{" "}
                         </EditButton>
 
-                        <DeleteButton>Delete</DeleteButton>
+                        <DeleteButton onClick={() => DeleteLogo(logo._id)}>
+                          Delete
+                        </DeleteButton>
                       </LogoButton>
                     </Logos>
                   ) : (
@@ -239,7 +263,9 @@ const Logo = ({ categories, logos }) => {
                         </Editlogolink>{" "}
                       </EditButton>
 
-                      <DeleteButton>Delete</DeleteButton>
+                      <DeleteButton onClick={() => DeleteLogo(logo._id)}>
+                        Delete
+                      </DeleteButton>
                     </LogoButton>
                   </Logos>
                 )
