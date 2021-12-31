@@ -2,6 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import { BiSearch } from "react-icons/bi";
 import { Link } from "react-router-dom";
+import shapesService from "../../services/Shapes";
+import { toast } from "react-toastify";
 const Containers = styled.div`
   flex: 4;
   // overflow-x: hidden;
@@ -111,9 +113,24 @@ const SaveLink = styled(Link)`
 
   text-decoration: none;
 `;
-const Shapes = ({ shapes }) => {
+const Shapes = ({ update, setUpdate, shapes }) => {
   const [searchShape, setSearchShape] = React.useState(null);
 
+  const deleteShape = (id) => {
+    shapesService
+      .deleteShape(id)
+      .then((res) => {
+        toast.success(res, {
+          position: toast.POSITION.TOP_CENTER,
+        });
+        setUpdate(!update);
+      })
+      .catch((err) => {
+        toast.error(err.response.data, {
+          position: toast.POSITION.TOP_CENTER,
+        });
+      });
+  };
   return (
     <Containers>
       <Addbutton>
@@ -151,7 +168,9 @@ const Shapes = ({ shapes }) => {
                         </SaveLink>{" "}
                       </EditButton>
 
-                      <DeleteButton>Delete</DeleteButton>
+                      <DeleteButton onClick={() => deleteShape(shape._id)}>
+                        Delete
+                      </DeleteButton>
                     </LogoButton>
                   </Logos>
                 ) : (
@@ -174,7 +193,9 @@ const Shapes = ({ shapes }) => {
                       </SaveLink>{" "}
                     </EditButton>
 
-                    <DeleteButton>Delete</DeleteButton>
+                    <DeleteButton onClick={() => deleteShape(shape._id)}>
+                      Delete
+                    </DeleteButton>
                   </LogoButton>
                 </Logos>
               );

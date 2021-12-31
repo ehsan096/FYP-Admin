@@ -218,7 +218,7 @@ function App() {
             />
           </Route>{" "}
           <Route exact path="/admin/add/shape">
-            <Addshape />
+            <Addshape setUpdate={setUpdate} update={update} />
           </Route>{" "}
           <Route exact path="/admin/shape/:id">
             <Editshape />
