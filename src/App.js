@@ -27,6 +27,7 @@ import Addiconcategory from "./pages/Addiconcategory/Addiconcategory";
 import Editiconcategory from "./pages/Editiconcategory/Editiconcategory";
 import Addlogoconcategory from "./pages/Addlogocategory/Addlogocategory";
 import Editlogoconcategory from "./pages/Editlogocategory/Editlogocategory ";
+import ChangePassword from "./pages/ChangePassword/ChangePassword";
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -199,7 +200,7 @@ function App() {
             />
           </Route>
           <Route exact path="/admin/shapes">
-            <Shapes setUpdate={setUpdate} update={update} shapes={shapes} />
+            <Shapes shapes={shapes} setUpdate={setUpdate} update={update} />
           </Route>
           <Route exact path="/admin/add/logo">
             <Addlogo
@@ -221,7 +222,7 @@ function App() {
             <Addshape setUpdate={setUpdate} update={update} />
           </Route>{" "}
           <Route exact path="/admin/shape/:id">
-            <Editshape />
+            <Editshape shapes={shapes} setUpdate={setUpdate} update={update} />
           </Route>{" "}
           <Route exact path="/admin/add/icon">
             <Addicon
@@ -257,6 +258,9 @@ function App() {
               update={update}
               categories={categories}
             />
+          </Route>
+          <Route exact path="/admin/profile">
+            <ChangePassword />
           </Route>
         </Switch>
       </Container>

@@ -13,7 +13,7 @@ import { useStyle } from "./AddshapeStyle";
 import shapesService from "../../services/Shapes";
 import { toast } from "react-toastify";
 
-const Addshape = ({ shapes, update, setUpdate }) => {
+const Addshape = ({ update, setUpdate }) => {
   const classes = useStyle();
   const [value, setValue] = React.useState({
     name: "",
@@ -84,7 +84,7 @@ const Addshape = ({ shapes, update, setUpdate }) => {
                 <Button
                   variant="contained"
                   className={classes.editlogobutton}
-                  onChange={AddData}
+                  onClick={AddData}
                 >
                   Add Shape
                 </Button>

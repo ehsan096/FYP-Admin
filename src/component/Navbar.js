@@ -157,7 +157,9 @@ const Navbar = () => {
             >
               <MenuItem onClick={handleClose}>
                 {" "}
-                <Link className={classes.profilemenulink}>Profile</Link>
+                <Link className={classes.profilemenulink} to={"/admin/profile"}>
+                  Profile
+                </Link>
               </MenuItem>
               <MenuItem onClick={handleClose}>Logout</MenuItem>
             </Menu>
