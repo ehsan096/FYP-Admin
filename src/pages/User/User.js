@@ -1,19 +1,33 @@
 import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-
+import userService from "../../services/UserService";
 import { BiSearch } from "react-icons/bi";
 const Containers = styled.div`
   flex: 4;
-  margin-top: 10px;
+  margin-top: 60px;
 `;
 const Addbutton = styled.div`
   display: flex;
   justify-content: flex-start;
   margin-right: 110px;
   margin-bottom: 40px;
+
+  position: fixed;
+  width: 75%;
+  top: 70px;
+  background-color: white;
+  padding-bottom: 1.5rem;
+  margin-left: 12px;
+  margin-top: -10px;
+  padding-top: 20px;
 `;
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+  margin-top: 5rem;
+
+  overflow-y: auto;
+  height: 470px;
+`;
 const Table = styled.table`
   box-shadow: rgb(145 158 171 / 24%) 0px 0px 2px 0px,
     rgb(145 158 171 / 24%) 0px 16px 32px -4px;
@@ -94,8 +108,27 @@ const User = ({ users }) => {
           </Trow>
           {users
             ? users.map((user) =>
-                searchUser ? (
-                  user.name.toLowerCase().includes(searchUser.toLowerCase()) ? (
+                userService.getLoggedInUser()._id !== user._id ? (
+                  searchUser ? (
+                    user.name
+                      .toLowerCase()
+                      .includes(searchUser.toLowerCase()) ? (
+                      <Trow>
+                        <Tdata>{user.name}</Tdata>
+                        <Tdata>{user.email}</Tdata>
+                        <Tdata>{user.logos.length}</Tdata>
+                        <Tdata>
+                          <DetailButton>
+                            <Detailslink to={`/admin/user/${user._id}`}>
+                              Details
+                            </Detailslink>{" "}
+                          </DetailButton>
+                        </Tdata>
+                      </Trow>
+                    ) : (
+                      ""
+                    )
+                  ) : (
                     <Trow>
                       <Tdata>{user.name}</Tdata>
                       <Tdata>{user.email}</Tdata>
@@ -108,22 +141,9 @@ const User = ({ users }) => {
                         </DetailButton>
                       </Tdata>
                     </Trow>
-                  ) : (
-                    ""
                   )
                 ) : (
-                  <Trow>
-                    <Tdata>{user.name}</Tdata>
-                    <Tdata>{user.email}</Tdata>
-                    <Tdata>{user.logos.length}</Tdata>
-                    <Tdata>
-                      <DetailButton>
-                        <Detailslink to={`/admin/user/${user._id}`}>
-                          Details
-                        </Detailslink>{" "}
-                      </DetailButton>
-                    </Tdata>
-                  </Trow>
+                  ""
                 )
               )
             : ""}

@@ -1,8 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import { HiChartBar } from "react-icons/hi";
+import { Link } from "react-router-dom";
 const Container = styled.div`
   margin-left: 10px;
+  margin-top: 10px;
 `;
 const Wrapper = styled.div`
   display: flex;
@@ -106,34 +108,42 @@ const Featured = ({ users, shapes, icons, logos }) => {
     <Container>
       <Welcome>Hi, Welcome Back</Welcome>
       <Wrapper>
-        <WeeklySale>
-          <SaleIcon>
-            <HiChartBar />
-          </SaleIcon>
-          <SaleHeading>{users ? users.length : 0}</SaleHeading>
-          <SaleText>Total Users</SaleText>
-        </WeeklySale>
-        <AllUser>
-          <SaleIcon>
-            <HiChartBar />
-          </SaleIcon>
-          <SaleHeading>{shapes ? shapes.length : 0}</SaleHeading>
-          <SaleText>Total Shapes</SaleText>
-        </AllUser>
-        <Order>
-          <SaleIcon>
-            <HiChartBar />
-          </SaleIcon>
-          <SaleHeading>{icons ? icons.length : 0}</SaleHeading>
-          <SaleText>Total Icons</SaleText>
-        </Order>
-        <Earning>
-          <SaleIcon>
-            <HiChartBar />
-          </SaleIcon>
-          <SaleHeading>{logos ? logos.length : 0}</SaleHeading>
-          <SaleText>Total Logo</SaleText>
-        </Earning>
+        <Link to="/admin/user" style={{ textDecoration: "none" }}>
+          <WeeklySale>
+            <SaleIcon>
+              <HiChartBar />
+            </SaleIcon>
+            <SaleHeading>{users ? users.length - 1 : 0}</SaleHeading>
+            <SaleText>Total Users</SaleText>
+          </WeeklySale>
+        </Link>
+        <Link to="/admin/shapes" style={{ textDecoration: "none" }}>
+          <AllUser>
+            <SaleIcon>
+              <HiChartBar />
+            </SaleIcon>
+            <SaleHeading>{shapes ? shapes.length : 0}</SaleHeading>
+            <SaleText>Total Shapes</SaleText>
+          </AllUser>
+        </Link>
+        <Link to="/admin/icons" style={{ textDecoration: "none" }}>
+          <Order>
+            <SaleIcon>
+              <HiChartBar />
+            </SaleIcon>
+            <SaleHeading>{icons ? icons.length : 0}</SaleHeading>
+            <SaleText>Total Icons</SaleText>
+          </Order>
+        </Link>
+        <Link to="/admin/logo" style={{ textDecoration: "none" }}>
+          <Earning>
+            <SaleIcon>
+              <HiChartBar />
+            </SaleIcon>
+            <SaleHeading>{logos ? logos.length : 0}</SaleHeading>
+            <SaleText>Total Logo</SaleText>
+          </Earning>
+        </Link>
       </Wrapper>
     </Container>
   );

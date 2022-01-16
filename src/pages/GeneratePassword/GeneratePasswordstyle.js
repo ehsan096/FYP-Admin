@@ -1,10 +1,8 @@
-import { Hidden, makeStyles } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
 
 export const useStyle = makeStyles((theme) => ({
   grid: {
-    marginTop: "4rem",
-    width: "100%",
-    overflow: "hidden",
+    marginTop: "6rem",
     // marginBottom: "3rem",
   },
   avatar: {
@@ -16,6 +14,7 @@ export const useStyle = makeStyles((theme) => ({
     flexDirection: "column",
     alignItems: "center",
     padding: theme.spacing(5),
+    width: "25rem",
     // marginBottom: "2rem",
   },
   logintext: {
@@ -54,22 +53,5 @@ export const useStyle = makeStyles((theme) => ({
   },
   margin: {
     margin: theme.spacing(1),
-  },
-  profilepic: {
-    width: "100px",
-    height: "100px",
-  },
-  password: {
-    marginTop: "1rem",
-  },
-  name: {
-    marginTop: "1rem",
-  },
-  actionbutton: {
-    marginTop: "1rem",
-    marginLeft: "17rem",
-  },
-  LastName: {
-    width: "89%",
   },
 }));

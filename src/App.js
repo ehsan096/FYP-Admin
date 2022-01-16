@@ -4,6 +4,7 @@ import {
   Switch,
   Route,
   Redirect,
+  useHistory,
 } from "react-router-dom";
 import styled from "styled-components";
 import Navbar from "./component/Navbar";
@@ -28,6 +29,8 @@ import Editiconcategory from "./pages/Editiconcategory/Editiconcategory";
 import Addlogoconcategory from "./pages/Addlogocategory/Addlogocategory";
 import Editlogoconcategory from "./pages/Editlogocategory/Editlogocategory ";
 import ChangePassword from "./pages/ChangePassword/ChangePassword";
+import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
+import GeneratePassword from "./pages/GeneratePassword/GeneratePassword";
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -54,6 +57,7 @@ function App() {
   const [shapes, setShapes] = React.useState(null);
   const [users, setUsers] = React.useState(null);
   const [update, setUpdate] = React.useState(false);
+  const [show, setShow] = React.useState(true);
   const getCategories = () => {
     categoryService
       .getCategories()
@@ -123,33 +127,53 @@ function App() {
   };
 
   React.useEffect(() => {
-    getUsers();
-    getCategories();
-    getIconCategories();
-    getIcons();
-    getShapes();
-    getLogos();
+    if (login) {
+      getUsers();
+      getCategories();
+      getIconCategories();
+      getIcons();
+      getShapes();
+      getLogos();
+    }
   }, [update]);
   React.useEffect(() => {
     setLogin(userService.isLoggedIn());
   });
 
-  React.useEffect(() => {
-    console.log("users > ", users ? users.length : 0);
-  }, [users]);
-
   return (
     <Router>
       <ToastContainer />
-      <Navbar />
+
       {login ? <Redirect to="/admin" /> : <Redirect to="/admin/login" />}
+
+      {/* <Navbar setLogin={setLogin} /> */}
+      {login ? <Navbar setShow={setShow} setLogin={setLogin} /> : ""}
       <Container>
         <Switch>
           <Route exact path="/admin/login">
-            {!login ? <Login /> : <Redirect to="/admin" />}
+            {!login ? <Login setLogin={setLogin} /> : <Redirect to="/admin" />}
+          </Route>
+          <Route exact path="/admin/forgetPassword">
+            {!login ? <ForgotPassword /> : <Redirect to="/admin" />}
+          </Route>
+          <Route exact path="/generatepassword/:token">
+            {!login ? <GeneratePassword /> : <Redirect to="/admin" />}
+          </Route>
+
+          <Route exact path="/admin/profile">
+            <ChangePassword setShow={setShow} />
+          </Route>
+          <Route exact path="/">
+            <Redirect to="/admin" />
           </Route>
         </Switch>
-        <Sidebar />
+        {login && show ? (
+          <Sidebar />
+        ) : (
+          // && history.location.pathname !== "admin/profile"
+
+          ""
+        )}
         <Switch>
           <Route exact path="/admin" exact>
             <Home
@@ -181,7 +205,7 @@ function App() {
             <User users={users} />
           </Route>
           <Route exact path="/admin/user/:id">
-            <UserDetails users={users} />
+            <UserDetails setUpdate={setUpdate} update={update} users={users} />
           </Route>
           <Route exact path="/admin/iconCategory">
             <IconCategory
@@ -258,9 +282,6 @@ function App() {
               update={update}
               categories={categories}
             />
-          </Route>
-          <Route exact path="/admin/profile">
-            <ChangePassword />
           </Route>
         </Switch>
       </Container>

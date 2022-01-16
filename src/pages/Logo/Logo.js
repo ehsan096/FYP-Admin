@@ -6,17 +6,15 @@ import logoService from "../../services/Logos";
 import { toast } from "react-toastify";
 const Containers = styled.div`
   flex: 4;
-  margin-top: 10px;
+  margin-top: 60px;
 `;
 const Wrapper = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
+  margin-top: 5rem;
 
-  /* display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-  flex-wrap: wrap;
-  margin-top: 50px; */
+  overflow-y: auto;
+  height: 470px;
 `;
 const Addbutton = styled.div`
   display: flex;
@@ -24,6 +22,14 @@ const Addbutton = styled.div`
   margin-left: 40px;
   margin-right: 110px;
   margin-bottom: 40px;
+  position: fixed;
+  width: 75%;
+  top: 70px;
+  background-color: white;
+  padding-bottom: 1.5rem;
+  margin-top: -10px;
+  margin-left: 12px;
+  padding-top: 20px;
 `;
 const Addnew = styled.button`
   border: none;

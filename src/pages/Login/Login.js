@@ -25,7 +25,7 @@ import { useStyle } from "./LoginStyle";
 import userService from "../../services/UserService";
 import { toast } from "react-toastify";
 
-const Login = () => {
+const Login = ({ setLogin }) => {
   const classes = useStyle();
   const [values, setValues] = React.useState({
     password: "",
@@ -33,7 +33,7 @@ const Login = () => {
   });
 
   const [email, setEmail] = React.useState("");
-  const [login, setLogin] = React.useState(false);
+  const [loggedin, setLoggedin] = React.useState(false);
   const history = useHistory();
 
   async function handleSubmit(event) {
@@ -41,8 +41,10 @@ const Login = () => {
 
     try {
       await userService.login(email, values.password);
-      setLogin(true);
+
       history.push("/admin");
+      setLoggedin(!loggedin);
+      setLogin(true);
       // console.log("Check Equality > ", history.goBack() === "/signup");
     } catch (e) {
       // alert(e.message);
@@ -122,7 +124,7 @@ const Login = () => {
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Typography className={classes.forgotpassword}>
-                  <Link>Forgot Password?</Link>
+                  <Link to={"/admin/forgetPassword"}>Forgot Password?</Link>
                 </Typography>
               </Grid>
             </Grid>

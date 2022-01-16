@@ -1,22 +1,25 @@
-import { Hidden, makeStyles } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
 
 export const useStyle = makeStyles((theme) => ({
   grid: {
-    marginTop: "4rem",
-    width: "100%",
-    overflow: "hidden",
-    // marginBottom: "3rem",
+    marginTop: "5rem",
+    // width: "23rem",
+  },
+  ForgetMain: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   },
   avatar: {
     backgroundColor: "#2AC5B3",
   },
   paper: {
-    // marginTop: theme.spacing(2),
+    marginTop: theme.spacing(2),
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    padding: theme.spacing(5),
-    // marginBottom: "2rem",
+    padding: theme.spacing(8),
+    width: "22rem",
   },
   logintext: {
     marginTop: "1rem",
@@ -33,15 +36,12 @@ export const useStyle = makeStyles((theme) => ({
   },
 
   input: {
-    marginTop: "15px",
-    marginBottom: "12px",
+    margin: "10px 0",
     width: "100%",
   },
-  signbutton: {
+  loginbutton: {
+    marginTop: "1rem",
     width: "100%",
-    fontFamily: "'Poppins', sans-serif;",
-
-    fontWeight: "600",
   },
   forgotpassword: {
     marginTop: "1rem",
@@ -54,22 +54,5 @@ export const useStyle = makeStyles((theme) => ({
   },
   margin: {
     margin: theme.spacing(1),
-  },
-  profilepic: {
-    width: "100px",
-    height: "100px",
-  },
-  password: {
-    marginTop: "1rem",
-  },
-  name: {
-    marginTop: "1rem",
-  },
-  actionbutton: {
-    marginTop: "1rem",
-    marginLeft: "17rem",
-  },
-  LastName: {
-    width: "89%",
   },
 }));

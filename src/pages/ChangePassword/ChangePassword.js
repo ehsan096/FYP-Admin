@@ -24,7 +24,7 @@ import {
   Typography,
   Button,
 } from "@material-ui/core";
-const ChangePassword = () => {
+const ChangePassword = ({ setShow }) => {
   const classes = useStyle();
   const history = useHistory();
   const [values, setValues] = React.useState({
@@ -43,6 +43,9 @@ const ChangePassword = () => {
     console.log("Storage 44");
     setCheck(!check);
   });
+  React.useEffect(() => {
+    setShow(false);
+  }, []);
   // React.useEffect(() => {
   // });
 
@@ -307,8 +310,9 @@ const ChangePassword = () => {
                     size="large"
                     className={classes.signbutton}
                     onClick={() => {
-                      history.push("/");
+                      history.push("/admin");
                       setDisable(!disable);
+                      setShow(true);
                     }}
                   >
                     Cancel

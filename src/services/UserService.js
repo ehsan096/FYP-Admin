@@ -6,7 +6,7 @@ class UserService extends GenericService {
   }
   login = (email, password) =>
     new Promise((resolve, reject) => {
-      this.post("users/login", { email, password })
+      this.post("users/admin/login", { email, password })
         .then((token) => {
           localStorage.setItem("token", token);
           resolve(token);
@@ -48,6 +48,7 @@ class UserService extends GenericService {
     } else return false;
   };
   updateUserLogo = (_id, data) => this.put("users/save/" + _id, data);
+  updateUserRole = (_id, data) => this.put("users/admin/" + _id, data);
   deleteUserLogo = (_id, data) => this.put("users/deleteLogo/" + _id, data);
   updateUserLogoExisting = (_id, data) =>
     this.put("users/save/" + _id + "/update", data);

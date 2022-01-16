@@ -6,9 +6,10 @@ import { RiShoppingBag3Fill } from "react-icons/ri";
 const Container = styled.div`
   flex: 1;
   height: calc(100vh - 60px);
+  margin-top: 60px;
 
   border-right: 1px solid rgb(160, 160, 160);
-  margin-left: 10px;
+  margin-left: -1rem;
   overflow-y: scroll;
   position: sticky;
   top: 50px;
@@ -47,7 +48,7 @@ const MenuItemLink = styled(Link)`
   text-decoration: none;
 `;
 
-const Sidebar = () => {
+const Sidebar = ({ setShow }) => {
   return (
     <Container>
       <Wrapper>
@@ -70,7 +71,7 @@ const Sidebar = () => {
             <MenuIcon>
               <RiShoppingBag3Fill />
             </MenuIcon>
-            <MenuItemLink to="/admin/logo">Logo</MenuItemLink>
+            <MenuItemLink to="/admin/logo">Logos</MenuItemLink>
           </MenuItem>
           <MenuItem>
             <MenuIcon>
@@ -99,12 +100,6 @@ const Sidebar = () => {
             </MenuIcon>
 
             <MenuItemLink to="/admin/user">Users</MenuItemLink>
-          </MenuItem>
-          <MenuItem>
-            <MenuIcon>
-              <RiShoppingBag3Fill />
-            </MenuIcon>
-            <MenuItemLink to="/admin/login">Profile</MenuItemLink>
           </MenuItem>
         </Menu>
       </Wrapper>

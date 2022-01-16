@@ -5,6 +5,9 @@ import Chart from "../component/AddChart";
 
 const Container = styled.div`
   flex: 4;
+  margin-top: 60px;
+  overflow-y: auto;
+  height: 560px;
 `;
 const Home = ({ categories, logos, iconCategories, shapes, icons, users }) => {
   return (
