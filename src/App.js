@@ -164,7 +164,7 @@ function App() {
             <ChangePassword setShow={setShow} />
           </Route>
           <Route exact path="/">
-            <Redirect to="/admin" />
+            {login ? <Redirect to="/admin" /> : <Redirect to="/admin/login" />}
           </Route>
         </Switch>
         {login && show ? (

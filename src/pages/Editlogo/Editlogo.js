@@ -168,12 +168,7 @@ const Editlogo = ({ setUpdate, update, categories, logos }) => {
                 }}
               />
             </Grid>
-            <Grid
-              item
-              lg={10}
-              className={classes.categoryFieldgrid}
-              onChange={(event) => setLogoo(event.target.value)}
-            >
+            <Grid item lg={10} className={classes.categoryFieldgrid}>
               <select
                 className={classes.categoryField}
                 onChange={(event) =>

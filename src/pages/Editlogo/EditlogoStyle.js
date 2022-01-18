@@ -2,7 +2,7 @@ import { makeStyles } from "@material-ui/core";
 
 export const useStyle = makeStyles((theme) => ({
   grid: {
-    marginTop: "1rem",
+    marginTop: "4rem",
     flex: 4,
   },
   avatar: {
